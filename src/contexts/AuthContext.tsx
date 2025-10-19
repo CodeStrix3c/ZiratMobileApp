@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await AsyncStorage.removeItem("user");
     setUser(null);
     setLoading(false);
-    router.replace("/auth/login");
+    router.replace("/auth");
   };
 
   return (
