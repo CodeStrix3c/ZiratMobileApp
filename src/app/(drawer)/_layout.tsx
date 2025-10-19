@@ -24,7 +24,7 @@ export default function DrawerLayout() {
             headerRight: () => (
               <TouchableOpacity
                 style={{ marginRight: 15 }}
-                onPress={() => router.push("/Notifications")}
+                onPress={() => router.push("/notifications")}
               >
                 <Bell color="#22c55e" size={24} />
               </TouchableOpacity>
@@ -33,7 +33,7 @@ export default function DrawerLayout() {
         />
 
         <Drawer.Screen
-          name="Settings"
+          name="settings"
           options={{
             title: "Settings",
             drawerLabel: "Settings",

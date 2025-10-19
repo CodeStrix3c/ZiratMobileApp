@@ -5,8 +5,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
+import { useProductsQuery } from "../../hooks/useProductsQuery";
 
 export default function HomeScreen() {
+  const { data } = useProductsQuery();
+  console.log(data, " products data");
   return (
     <ScrollView className="flex-1 bg-lightGreen px-5 pt-10">
       <Text className="text-primary text-lg mb-3">Ziraat</Text>

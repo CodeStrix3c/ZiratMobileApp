@@ -3,14 +3,15 @@ import React, { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 import "../../styles/global.css";
 import { theme } from "../constants/theme";
-import { AuthProvider, useAuth } from "../contexts/AuthContext";
+import AppProvider from "../contexts/AppProvider";
+import { useAuth } from "../contexts/AuthContext";
 
 function RouteGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace("/auth/login");
+      router.replace("/auth");
     }
   }, [user]);
 
@@ -21,7 +22,7 @@ function RouteGuard({ children }: { children: React.ReactNode }) {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
+    <AppProvider>
       <RouteGuard>
         <PaperProvider theme={theme}>
           <Stack screenOptions={{ headerShown: false }}>
@@ -29,6 +30,6 @@ export default function RootLayout() {
           </Stack>
         </PaperProvider>
       </RouteGuard>
-    </AuthProvider>
+    </AppProvider>
   );
 }
