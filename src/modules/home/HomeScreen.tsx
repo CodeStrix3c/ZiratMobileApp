@@ -15,7 +15,7 @@ export default function HomeScreen() {
       <Text className="text-primary text-lg mb-3">Ziraat</Text>
 
       <LinearGradient
-        colors={[colors.blackHover, colors.black]}
+        colors={[colors.darkHover, colors.dark]}
         className="flex-row justify-between items-center p-5 rounded-2xl mb-5"
       >
         <View>
