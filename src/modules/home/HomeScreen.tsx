@@ -26,7 +26,7 @@ export default function HomeScreen() {
             Humidity: 65% Rain: 0mm
           </Text>
         </View>
-        <Ionicons name="sunny" size={50} color={colors.white} />
+        <Ionicons name="sunny" size={50} color={colors.light} />
       </LinearGradient>
 
       <View className="flex-row justify-between mb-5">
