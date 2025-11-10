@@ -121,7 +121,7 @@ export default function AuthForm() {
           Continue with Google
         </Button>
 
-        <Text className="mt-6 text-center text-black">
+        <Text className="mt-6 text-center text-dark">
           {isLogin ? "Don’t have an account? " : "Already have an account? "}
           <Text
             className="text-secondary font-bold"
