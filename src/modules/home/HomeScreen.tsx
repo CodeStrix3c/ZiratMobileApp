@@ -19,10 +19,10 @@ export default function HomeScreen() {
         className="flex-row justify-between items-center p-5 rounded-2xl mb-5"
       >
         <View>
-          <Text className="text-white text-base">Today&apos;s Weather</Text>
-          <Text className="text-white text-4xl font-bold">28°C</Text>
-          <Text className="text-white text-lg">Sunny</Text>
-          <Text className="text-white mt-1 text-sm">
+          <Text className="text-light text-base">Today&apos;s Weather</Text>
+          <Text className="text-light text-4xl font-bold">28°C</Text>
+          <Text className="text-light text-lg">Sunny</Text>
+          <Text className="text-light mt-1 text-sm">
             Humidity: 65% Rain: 0mm
           </Text>
         </View>
