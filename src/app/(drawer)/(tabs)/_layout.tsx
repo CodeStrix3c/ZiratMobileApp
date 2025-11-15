@@ -10,7 +10,6 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false,
         tabBarActiveTintColor: colors.secondary,
         tabBarInactiveTintColor: colors.black,
         tabBarStyle: {
@@ -45,7 +44,7 @@ export default function TabLayout() {
         name="Market"
         options={{
           title: "Market",
-          tabBarIcon: ({ color, size }) => (
+           tabBarIcon: ({ color, size }) => (
             <TrendingUpIcon color={color} size={size} />
           ),
         }}
