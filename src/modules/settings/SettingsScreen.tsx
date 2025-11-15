@@ -119,7 +119,7 @@ export default function SettingsScreen() {
           style={{ backgroundColor: colors.secondary }}
           onPress={handleLogout}
         >
-          <Text className="text-white font-semibold">Logout</Text>
+          <Text className="text-light font-semibold">Logout</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
