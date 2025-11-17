@@ -6,9 +6,9 @@ export const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: colors.primary,
-    background: colors.white,
-    text: colors.black,
-    placeholder: colors.gray,
+    background: colors.light,
+    text: colors.dark,
+    placeholder: colors.neutral,
     error: colors.error,
   },
 };

@@ -1,21 +1,21 @@
-import { Stack, router } from "expo-router";
-import React, { useEffect } from "react";
+import { Stack } from "expo-router";
+import React from "react";
 import { PaperProvider } from "react-native-paper";
 import "../../styles/global.css";
 import { theme } from "../constants/theme";
 import AppProvider from "../contexts/AppProvider";
-import { useAuth } from "../contexts/AuthContext";
 
 function RouteGuard({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth();
+  // const { user, loading } = useAuth();
+  // console.log(user, "user...");
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.replace("/auth");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (!loading && !user) {
+  //     router.replace("/auth");
+  //   }
+  // }, [user, loading]);
 
-  // if (loading || !user) return null;
+  // if (loading) return null;
 
   return <>{children}</>;
 }
@@ -23,13 +23,13 @@ function RouteGuard({ children }: { children: React.ReactNode }) {
 export default function RootLayout() {
   return (
     <AppProvider>
-      <RouteGuard>
-        <PaperProvider theme={theme}>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-          </Stack>
-        </PaperProvider>
-      </RouteGuard>
+      {/* <RouteGuard> */}
+      <PaperProvider theme={theme}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+        </Stack>
+      </PaperProvider>
+      {/* </RouteGuard> */}
     </AppProvider>
   );
 }
