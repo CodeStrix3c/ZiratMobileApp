@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-
-
->>>>>>> b49707cc895f99ee182eaa637d94988df3a01812
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
@@ -12,7 +7,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 
@@ -25,11 +20,19 @@ const colors = {
 
 const screenWidth = Dimensions.get("window").width;
 
-
 const SectionHeader = ({ icon, title }) => (
-  <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 8, marginTop: 20 }}>
+  <View
+    style={{
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 8,
+      marginTop: 20,
+    }}
+  >
     <Ionicons name={icon} size={22} color="#2d6b06" />
-    <Text style={{ fontSize: 18, fontWeight: "700", marginLeft: 8 }}>{title}</Text>
+    <Text style={{ fontSize: 18, fontWeight: "700", marginLeft: 8 }}>
+      {title}
+    </Text>
   </View>
 );
 
@@ -69,8 +72,6 @@ const IconBadge = ({ name, bg }) => (
   </View>
 );
 
-
-
 const HomeScreen = () => {
   const chartData = {
     labels: ["Orchards", "Harvest", "Spray"],
@@ -100,7 +101,9 @@ const HomeScreen = () => {
             <View className="flex-row justify-between items-center p-6">
               <View>
                 <Text className="text-white text-4xl font-extrabold">28°C</Text>
-                <Text className="text-white text-base opacity-90 mt-1">Sunny</Text>
+                <Text className="text-white text-base opacity-90 mt-1">
+                  Sunny
+                </Text>
 
                 <View className="mt-4 space-y-2">
                   <View className="flex-row items-center">
@@ -111,14 +114,18 @@ const HomeScreen = () => {
                   </View>
                   <View className="flex-row items-center mt-2">
                     <Ionicons name="rainy-outline" size={18} color="#fff" />
-                    <Text className="text-white text-sm opacity-90 ml-2">Rain: 0mm</Text>
+                    <Text className="text-white text-sm opacity-90 ml-2">
+                      Rain: 0mm
+                    </Text>
                   </View>
                 </View>
               </View>
 
               <View className="items-center">
                 <Ionicons name="sunny" size={70} color="#fff" />
-                <Text className="text-white text-xs mt-2 opacity-90">Clear Sky</Text>
+                <Text className="text-white text-xs mt-2 opacity-90">
+                  Clear Sky
+                </Text>
               </View>
             </View>
           </LinearGradient>
@@ -146,13 +153,13 @@ const HomeScreen = () => {
               }}
             >
               <Ionicons name={item.icon} size={30} color={colors.secondary} />
-              <Text className="text-gray-800 font-semibold mt-2">{item.day}</Text>
+              <Text className="text-gray-800 font-semibold mt-2">
+                {item.day}
+              </Text>
               <Text className="text-gray-600 text-sm">{item.temp}</Text>
             </View>
           ))}
         </View>
-
-        
 
         {/* Quick Actions */}
         <Text className="font-semibold text-lg mb-3 p-2 text-gray-800">
@@ -212,8 +219,9 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
 
-        
-        <Text className="text-lg font-semibold p-2 mb-3">Featured Pesticides</Text>
+        <Text className="text-lg font-semibold p-2 mb-3">
+          Featured Pesticides
+        </Text>
 
         <ScrollView
           horizontal
@@ -364,7 +372,9 @@ const HomeScreen = () => {
               <View key={i} className="flex-row items-start p-4">
                 <Ionicons name={tip.icon} size={20} color={colors.primary} />
                 <View className="ml-3 flex-1">
-                  <Text className="text-gray-800 font-semibold">{tip.title}</Text>
+                  <Text className="text-gray-800 font-semibold">
+                    {tip.title}
+                  </Text>
                   <Text className="text-gray-600 text-xs mt-1">{tip.desc}</Text>
                 </View>
               </View>
@@ -377,5 +387,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-

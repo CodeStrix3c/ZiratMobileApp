@@ -16,7 +16,8 @@ export default function SettingsScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = React.useState(false);
 
-  const { signOut, user } = useAuth();
+  const { logout, user } = useAuth();
+  console.log(user, "user...");
 
   const handleLogout = () => {
     Alert.alert("Logout", "Are you sure you want to logout?", [
@@ -25,14 +26,14 @@ export default function SettingsScreen() {
         text: "Logout",
         style: "destructive",
         onPress: async () => {
-          await signOut();
+          await logout();
         },
       },
     ]);
   };
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: colors.white }}>
+    <SafeAreaView className="flex-1" style={{ backgroundColor: colors.light }}>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 20 }}
         className="px-4"
@@ -55,7 +56,7 @@ export default function SettingsScreen() {
             Username: {user?.name || "N/A"}
           </Text>
           <Text style={{ color: colors.gray }}>
-            Email: {user ? `${user.name.toLowerCase()}@example.com` : "N/A"}
+            Email:@example.com` : "N/A"
           </Text>
         </View>
 
