@@ -4,15 +4,16 @@ import { Bell, HomeIcon, Settings } from "lucide-react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 export default function DrawerLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer
         screenOptions={{
-          // headerShown: false,
           drawerActiveTintColor: "#22c55e",
         }}
       >
+        {/* HOME */}
         <Drawer.Screen
           name="(tabs)"
           options={{
@@ -32,6 +33,7 @@ export default function DrawerLayout() {
           }}
         />
 
+        {/* SETTINGS */}
         <Drawer.Screen
           name="Settings"
           options={{
@@ -40,6 +42,15 @@ export default function DrawerLayout() {
             drawerIcon: ({ color, size }) => (
               <Settings color={color} size={size} />
             ),
+          }}
+        />
+
+        {/* MAIN FARMER DASHBOARD PAGE */}
+        <Drawer.Screen
+          name="FarmerDashboard"
+          options={{
+            title: "Farmer Dashboard",
+            drawerLabel: "Farmer Dashboard",
           }}
         />
       </Drawer>

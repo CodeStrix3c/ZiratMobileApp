@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 import "../../styles/global.css";
 import { theme } from "../constants/theme";
+
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 
 function RouteGuard({ children }: { children: React.ReactNode }) {
