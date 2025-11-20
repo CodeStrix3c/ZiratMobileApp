@@ -1,0 +1,59 @@
+[
+  {"_id":"101","title":"Buprofezin","category":"Insecticide – IGR","photos":["buprofezin_1","buprofezin_2","buprofezin_3","buprofezin_4"],"description":"Agricultural insecticide widely used for pest control in Indian farming.","price":500,"discountPrice":450,"inStock":true,"rating":4.3,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"102","title":"Acetamiprid","category":"Insecticide – Neonicotinoid","photos":["acetamiprid_1","acetamiprid_2","acetamiprid_3","acetamiprid_4","acetamiprid_5"],"description":"General-purpose pesticide effective against a wide range of insects.","price":350,"discountPrice":200,"inStock":true,"rating":3.9,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"103","title":"Carbendazim","category":"Fungicide – Systemic","photos":["carbendazim_1","carbendazim_2","carbendazim_3","carbendazim_4"],"description":"Used for weed control and to protect crops against competing plants.","price":400,"discountPrice":360,"inStock":true,"rating":4.5,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"104","title":"Chlorantraniliprole","category":"Insecticide – Diamide","photos":["chlorantraniliprole_1","chlorantraniliprole_2","chlorantraniliprole_3","chlorantraniliprole_4","chlorantraniliprole_5"],"description":"Sprayer-friendly formulation suitable for indoor and outdoor applications.","price":1200,"inStock":true,"rating":4.4,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"105","title":"Chlorpyrifos","category":"Insecticide – Organophosphate","photos":["chlorpyrifos_1","chlorpyrifos_2","chlorpyrifos_3","chlorpyrifos_4"],"description":"Neem oil-based organic spray suitable for all plant types.","price":600,"discountPrice":550,"inStock":true,"rating":4.8,"label":"Danger","tag":"100% Certified"},
+
+  {"_id":"106","title":"Cypermethrin","category":"Insecticide – Pyrethroid","photos":["cypermethrin_1","cypermethrin_2","cypermethrin_3","cypermethrin_4"],"description":"Pure cold-pressed neem oil used for eco-friendly pest control.","price":650,"inStock":true,"rating":4.8,"label":"Danger","tag":"100% Certified"},
+
+  {"_id":"107","title":"Deltamethrin","category":"Insecticide – Pyrethroid","photos":["deltamethrin_1","deltamethrin_2","deltamethrin_3","deltamethrin_4"],"description":"Organic potting mix ideal for gardening and seed germination.","price":350,"discountPrice":320,"inStock":true,"rating":4.6,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"108","title":"Diafenthiuron","category":"Insecticide – Thiourea Class","photos":["diafenthiuron_1","diafenthiuron_2","diafenthiuron_3","diafenthiuron_4","diafenthiuron_5"],"description":"Biodegradable cocopeat promoting soil health and preventing pests.","price":400,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"109","title":"Difenoconazole","category":"Fungicide – Triazole","photos":["difenoconazole_1","difenoconazole_2","difenoconazole_3","difenoconazole_4","difenoconazole_5"],"description":"Water-soluble neem oil ideal for organic farming and composting.","price":550,"discountPrice":500,"inStock":true,"rating":4.8,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"110","title":"Dimethoate","category":"Insecticide – Organophosphate","photos":["dimethoate_1","dimethoate_2","dimethoate_3","dimethoate_4","dimethoate_5"],"description":"Organic spray that effectively removes insects like mealybugs.","price":450,"inStock":true,"rating":4.7,"label":"Danger","tag":"100% Certified"},
+
+  {"_id":"111","title":"Emamectin Benzoate","category":"Bio-Insecticide – Avermectin","photos":["emamectinbenzoate_1","emamectinbenzoate_2","emamectinbenzoate_3","emamectinbenzoate_4","emamectinbenzoate_5"],"description":"Bio-pesticide supporting composting and plant protection.","price":700,"discountPrice":650,"inStock":true,"rating":4.8,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"112","title":"Fipronil","category":"Insecticide – Phenylpyrazole","photos":["fipronil_1","fipronil_2","fipronil_3","fipronil_4"],"description":"Loose cocopeat suitable for all hydroponic systems.","price":500,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"113","title":"Flonicamid","category":"Insecticide – Systemic","photos":["flonicamid_1","flonicamid_2","flonicamid_3","flonicamid_4","flonicamid_5"],"description":"Highly effective against diamondback moth infestations.","price":650,"discountPrice":600,"inStock":true,"rating":4.7,"label":"Danger","tag":"100% Certified"},
+
+  {"_id":"114","title":"Hexaconazole","category":"Fungicide – Triazole","photos":["hexaconazole_1","hexaconazole_2","hexaconazole_3","hexaconazole_4","hexaconazole_5"],"description":"Wide-range plant protection chemical used across crop types.","price":700,"inStock":true,"rating":4.6,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"115","title":"Imicadepriod","category":"Insecticide – Neonicotinoid","photos":["imicadepriod_1","imicadepriod_2","imicadepriod_3","imicadepriod_4","imicadepriod_5","imicadepriod_6"],"description":"Triple-action pesticide delivering long-lasting pest control.","price":800,"discountPrice":750,"inStock":true,"rating":4.8,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"116","title":"Imidacloprid","category":"Insecticide – Neonicotinoid","photos":["imidacloprid_1","imidacloprid_2","imidacloprid_3","imidacloprid_4","imidacloprid_5"],"description":"Liquid calcium nitrate formula supporting crop nutrition.","price":750,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"117","title":"Indoxacarb","category":"Insecticide – Oxadiazine","photos":["indoxacarb_1","indoxacarb_2","indoxacarb_3","indoxacarb_4","indoxacarb_5"],"description":"Chelated micronutrient mixture that supports plant growth.","price":700,"discountPrice":650,"inStock":true,"rating":4.6,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"118","title":"Lambda-cyhalothrin","category":"Insecticide – Pyrethroid","photos":["lambdacyhalothrin_1","lambdacyhalothrin_2","lambdacyhalothrin_3","lambdacyhalothrin_4"],"description":"Organic-certified foliar spray for healthy crop growth.","price":650,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"119","title":"Malathion","category":"Insecticide – Organophosphate","photos":["malathion_1","malathion_2","malathion_3","malathion_4"],"description":"Amino acids with micronutrients that improve yield quality.","price":800,"discountPrice":750,"inStock":true,"rating":4.8,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"120","title":"Quinalphos","category":"Insecticide – Organophosphate","photos":["quinalphos_1","quinalphos_2","quinalphos_3","quinalphos_4"],"description":"Zinc and sulfur nutrients essential for flower and fruit growth.","price":550,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"121","title":"Mancozeb","category":"Fungicide – Dithiocarbamate","photos":["mancozeb_1","mancozeb_2","mancozeb_3","mancozeb_4"],"description":"Key plant nutrients that support growth and productivity.","price":550,"discountPrice":500,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"122","title":"Propiconazole","category":"Fungicide – Triazole","photos":["propiconazole_1","propiconazole_2","propiconazole_3","propiconazole_4"],"description":"Versatile crop protection formulation for multiple crops.","price":550,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"123","title":"Buprofezin","category":"Insecticide – IGR","photos":["buprofezin_1","buprofezin_2","buprofezin_3","buprofezin_4"],"description":"Supports plant flower and fruit setting along with growth.","price":550,"discountPrice":500,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"124","title":"Spinosad","category":"Bio-Insecticide – Spinosyn Class","photos":["spinosad_1","spinosad_2","spinosad_3","spinosad_4"],"description":"Nutrient-rich formula supporting healthy plant growth.","price":550,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"125","title":"Spirotetramat","category":"Insecticide – Tetramic Acid Derivative","photos":["spirotetramat_1","spirotetramat_2","spirotetramat_3","spirotetramat_4","spirotetramat_5"],"description":"Promotes flower and fruit development in crops.","price":550,"discountPrice":500,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"126","title":"Thiamethoxam","category":"Insecticide – Neonicotinoid","photos":["thiamethoxam_1","thiamethoxam_2","thiamethoxam_3","thiamethoxam_4","thiamethoxam_5"],"description":"Essential nutrients that support plant health and yield.","price":550,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"127","title":"Hexaconazole","category":"Fungicide – Triazole","photos":["hexaconazole_1","hexaconazole_2","hexaconazole_3","hexaconazole_4"],"description":"Widely used crop-protection chemical for higher yield.","price":550,"discountPrice":500,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"128","title":"Fipronil","category":"Insecticide – Phenylpyrazole","photos":["fipronil_1","fipronil_2","fipronil_3","fipronil_4"],"description":"Plant nutrient mix supporting flowering and fruiting.","price":550,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"},
+
+  {"_id":"129","title":"Cypermethrin","category":"Insecticide – Pyrethroid","photos":["cypermethrin_1","cypermethrin_2","cypermethrin_3","cypermethrin_4"],"description":"Nutrient-rich plant formula enhancing production.","price":550,"discountPrice":500,"inStock":true,"rating":4.7,"label":"Eco-Friendly","tag":"100% Certified"}
+]
