@@ -85,6 +85,20 @@ export default function ProfileScreen() {
   return (
     <ScrollView className="flex-1 bg-white p-5">
       {/* Profile Header */}
+      <TouchableOpacity
+        onPress={() => router.push("/vendor/profile-completion")}
+      >
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "700",
+            marginBottom: 10,
+            color: colors.primary,
+          }}
+        >
+          Become a Supplier
+        </Text>
+      </TouchableOpacity>
       <ProfileHeader
         profileData={profileData}
         onEdit={() => goToSection("profile")}

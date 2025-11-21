@@ -9,7 +9,7 @@ interface FormInputProps {
   control: Control<any>;
   name: string;
   label: string;
-  type?: InputType; // 👈 NEW
+  type?: InputType;
   optional?: boolean;
   defaultValue?: string;
   error?: any;
@@ -46,7 +46,7 @@ export default function FormInput({
         field: { onChange, value, onBlur },
         fieldState: { error: fieldError },
       }) => {
-        const showError = !optional && !!(fieldError || error);
+        const showError = !!(fieldError || error); // ✅ fixed
 
         return (
           <View style={{ marginBottom: 20 }}>
@@ -56,7 +56,6 @@ export default function FormInput({
               value={value}
               onChangeText={(text) => {
                 if (type === "number") {
-                  // allow only digits
                   const numericValue = text.replace(/[^0-9]/g, "");
                   onChange(numericValue);
                 } else {
@@ -68,12 +67,12 @@ export default function FormInput({
               keyboardType={keyboardTypeMap[type]}
               error={showError}
               right={
-                isSecure ? (
+                isSecure && (
                   <TextInput.Icon
                     icon={showPassword ? "eye-off" : "eye"}
                     onPress={() => setShowPassword((p) => !p)}
                   />
-                ) : undefined
+                )
               }
               style={{ backgroundColor: "white" }}
               {...props}
