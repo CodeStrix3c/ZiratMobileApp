@@ -1,21 +1,41 @@
-// app/components/form/RNPaperFormInput.tsx
 import React, { useState } from "react";
-import { Controller } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";
+
+type InputType = "text" | "number" | "email" | "phone" | "password";
+
+interface FormInputProps {
+  control: Control<any>;
+  name: string;
+  label: string;
+  type?: InputType; // 👈 NEW
+  optional?: boolean;
+  defaultValue?: string;
+  error?: any;
+}
 
 export default function FormInput({
   control,
   name,
   label,
-  secure = false,
-  optional = false, // <-- NEW
-  icon,
-  onPressIcon,
+  type = "text",
+  optional = false,
   defaultValue = "",
+  error,
   ...props
-}: any) {
+}: FormInputProps) {
   const [showPassword, setShowPassword] = useState(false);
+
+  const keyboardTypeMap = {
+    text: "default",
+    number: "numeric",
+    email: "email-address",
+    phone: "phone-pad",
+    password: "default",
+  } as const;
+
+  const isSecure = type === "password";
 
   return (
     <Controller
@@ -24,10 +44,9 @@ export default function FormInput({
       defaultValue={defaultValue}
       render={({
         field: { onChange, value, onBlur },
-        fieldState: { error },
+        fieldState: { error: fieldError },
       }) => {
-        // 👇 IF optional, do NOT show errors
-        const showError = !optional && !!error;
+        const showError = !optional && !!(fieldError || error);
 
         return (
           <View style={{ marginBottom: 20 }}>
@@ -35,18 +54,25 @@ export default function FormInput({
               label={optional ? `${label} (Optional)` : label}
               mode="outlined"
               value={value}
-              onChangeText={onChange}
+              onChangeText={(text) => {
+                if (type === "number") {
+                  // allow only digits
+                  const numericValue = text.replace(/[^0-9]/g, "");
+                  onChange(numericValue);
+                } else {
+                  onChange(text);
+                }
+              }}
               onBlur={onBlur}
-              secureTextEntry={secure && !showPassword}
+              secureTextEntry={isSecure && !showPassword}
+              keyboardType={keyboardTypeMap[type]}
               error={showError}
               right={
-                secure ? (
+                isSecure ? (
                   <TextInput.Icon
                     icon={showPassword ? "eye-off" : "eye"}
                     onPress={() => setShowPassword((p) => !p)}
                   />
-                ) : icon ? (
-                  <TextInput.Icon icon={icon} onPress={onPressIcon} />
                 ) : undefined
               }
               style={{ backgroundColor: "white" }}
@@ -55,7 +81,7 @@ export default function FormInput({
 
             {showError && (
               <HelperText type="error" visible>
-                {error.message}
+                {(fieldError || error)?.message}
               </HelperText>
             )}
           </View>
