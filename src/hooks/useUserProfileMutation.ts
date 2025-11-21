@@ -1,5 +1,12 @@
+// src/hooks/reactQueryHooks.js
+
 import { useMutation, useQuery } from "@tanstack/react-query";
+
 import {
+  deleteAddressSection,
+  deleteEducationSection,
+  deleteProfessionSection,
+  deleteProfileSection,
   getAddressSection,
   getEducationSection,
   getProfessionSection,
@@ -9,22 +16,24 @@ import {
   saveEducationSection,
   saveProfessionSection,
   saveProfileSection,
+  updateAddressSection,
+  updateEducationSection,
+  updateProfessionSection,
+  updateProfileSection,
   verifyUserOtp,
 } from "../services/userProfileService";
 
+// ----------------------------------------------------
 // 🔐 LOGIN
-export const useLoginMutation = () => {
-  return useMutation({
-    mutationFn: login,
-  });
-};
+// ----------------------------------------------------
+export const useLoginMutation = () => useMutation({ mutationFn: login });
 
-// 🧍 PROFILE SECTION
-export const useProfileMutation = () =>
-  useMutation({
-    mutationFn: saveProfileSection,
-  });
+export const useOtpVerifyMutation = () =>
+  useMutation({ mutationFn: verifyUserOtp });
 
+// ----------------------------------------------------
+// 👤 PROFILE
+// ----------------------------------------------------
 export const useProfileQuery = (userId) =>
   useQuery({
     queryKey: ["profileSection", userId],
@@ -32,18 +41,18 @@ export const useProfileQuery = (userId) =>
     enabled: !!userId,
   });
 
-// 🔢 OTP VERIFY
-export const useOtpVerifyMutation = () =>
-  useMutation({
-    mutationFn: verifyUserOtp,
-  });
+export const useProfileMutation = () =>
+  useMutation({ mutationFn: saveProfileSection });
 
-// 🏠 ADDRESS SECTION
-export const useAddressMutation = () =>
-  useMutation({
-    mutationFn: saveAddressSection,
-  });
+export const useProfileUpdateMutation = () =>
+  useMutation({ mutationFn: updateProfileSection });
 
+export const useProfileDeleteMutation = () =>
+  useMutation({ mutationFn: deleteProfileSection });
+
+// ----------------------------------------------------
+// 🏠 ADDRESS
+// ----------------------------------------------------
 export const useAddressQuery = (profileId) =>
   useQuery({
     queryKey: ["addressSection", profileId],
@@ -51,12 +60,18 @@ export const useAddressQuery = (profileId) =>
     enabled: !!profileId,
   });
 
-// 🎓 EDUCATION SECTION
-export const useEducationMutation = () =>
-  useMutation({
-    mutationFn: saveEducationSection,
-  });
+export const useAddressMutation = () =>
+  useMutation({ mutationFn: saveAddressSection });
 
+export const useAddressUpdateMutation = () =>
+  useMutation({ mutationFn: updateAddressSection });
+
+export const useAddressDeleteMutation = () =>
+  useMutation({ mutationFn: deleteAddressSection });
+
+// ----------------------------------------------------
+// 🎓 EDUCATION
+// ----------------------------------------------------
 export const useEducationQuery = (profileId) =>
   useQuery({
     queryKey: ["educationSection", profileId],
@@ -64,15 +79,30 @@ export const useEducationQuery = (profileId) =>
     enabled: !!profileId,
   });
 
-// 💼 PROFESSION SECTION
-export const useProfessionMutation = () =>
-  useMutation({
-    mutationFn: saveProfessionSection,
-  });
+export const useEducationMutation = () =>
+  useMutation({ mutationFn: saveEducationSection });
 
+export const useEducationUpdateMutation = () =>
+  useMutation({ mutationFn: updateEducationSection });
+
+export const useEducationDeleteMutation = () =>
+  useMutation({ mutationFn: deleteEducationSection });
+
+// ----------------------------------------------------
+// 💼 PROFESSION
+// ----------------------------------------------------
 export const useProfessionQuery = (profileId) =>
   useQuery({
     queryKey: ["professionSection", profileId],
     queryFn: () => getProfessionSection(profileId),
     enabled: !!profileId,
   });
+
+export const useProfessionMutation = () =>
+  useMutation({ mutationFn: saveProfessionSection });
+
+export const useProfessionUpdateMutation = () =>
+  useMutation({ mutationFn: updateProfessionSection });
+
+export const useProfessionDeleteMutation = () =>
+  useMutation({ mutationFn: deleteProfessionSection });

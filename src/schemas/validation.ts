@@ -20,8 +20,35 @@ export const requiredEmail = () =>
     }
   });
 
-// Required password with uppercase + length checks
-export const requiredPassword = () =>
+export const requiredPhone = () =>
+  z.string().superRefine((value, ctx) => {
+    if (!value.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Phone number is required",
+      });
+      return;
+    }
+
+    if (value.length !== 10) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Enter Valid Phone Number",
+      });
+    }
+  });
+
+export const requiredPasswordOnly = () =>
+  z.string().superRefine((value, ctx) => {
+    if (!value.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Password is required",
+      });
+    }
+  });
+
+export const requiredPasswordStrong = () =>
   z.string().superRefine((value, ctx) => {
     if (!value.trim()) {
       ctx.addIssue({
@@ -44,9 +71,13 @@ export const requiredPassword = () =>
         message: "Password must contain at least one uppercase letter",
       });
     }
+
+    // Optional extras:
+    // if (!/[0-9]/.test(value)) ...
+    // if (!/[!@#$%^&*]/.test(value)) ...
   });
 
-// Required username (simple pattern)
+// Required username
 export const requiredUsername = () =>
   z.string().superRefine((value, ctx) => {
     if (!value.trim()) {

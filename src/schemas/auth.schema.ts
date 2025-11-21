@@ -1,17 +1,19 @@
 import { z } from "zod";
 import {
   requiredEmail,
-  requiredPassword,
+  requiredPasswordOnly,
+  requiredPasswordStrong,
+  requiredPhone,
   requiredUsername,
 } from "./validation";
 
 export const LoginSchema = z.object({
-  email: requiredEmail(),
-  password: requiredPassword(),
+  phone: requiredPhone(),
+  password: requiredPasswordOnly(),
 });
 
 export const RegisterSchema = z.object({
   username: requiredUsername(),
   email: requiredEmail(),
-  password: requiredPassword(),
+  password: requiredPasswordStrong(),
 });

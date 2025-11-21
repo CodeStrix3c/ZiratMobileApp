@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -7,26 +8,18 @@ const axiosInstance = axios.create({
   },
 });
 
-// axiosInstance.interceptors.request.use(
-//   async (config) => {
-//     // ⛔ BLOCK real calls in mock mode
-//     if (USE_MOCK_API) {
-//       return Promise.reject({ mock: true, url: config.url });
-//     }
+axiosInstance.interceptors.request.use(
+  async (config) => {
+    const token = await AsyncStorage.getItem("auth_token");
 
-//     // Auth logic (except when disabled)
-//     if (config.auth !== false) {
-//       const token = await AsyncStorage.getItem("token");
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
-//       if (token) {
-//         config.headers = config.headers || {};
-//         config.headers.Authorization = `Bearer ${token}`;
-//       }
-//     }
-
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 export default axiosInstance;
