@@ -1,12 +1,12 @@
-import axiosInstance from "../api/client/axiosInstance";
+import axiosUser from "../api/client/axiosUser";
 
 export const getProducts = async () => {
-  const { data } = await axiosInstance.get("/api/products");
+  const { data } = await axiosUser.get("/api/products");
 
   return data;
 };
 
 export const getProductById = async (id) => {
-  const { data } = await axiosInstance.get(`/api/products/${id}`);
+  const { data } = await axiosUser.get(`/api/products/${id}`);
   return data;
 };
