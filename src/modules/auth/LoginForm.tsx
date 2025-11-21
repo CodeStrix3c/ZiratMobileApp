@@ -1,7 +1,6 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useLoginMutation } from "@/src/hooks/useUserProfileMutation";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { View } from "react-native";
@@ -20,24 +19,25 @@ export default function LoginForm() {
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
 
   const onSubmit = async (data: any) => {
-    try {
-      const response = await loginMutate({
-        phone: data.phone,
-        password: data.password,
-      });
-      if (response.success) {
-        await setUserToken(response.token);
-        await setUserId(response.user);
-        router.replace("/");
-        showSuccessToast("logged in");
-      }
+    // try {
+    //   const response = await loginMutate({
+    //     phone: data.phone,
+    //     password: data.password,
+    //   });
+    //   if (response.success) {
+    //     await setUserToken(response.token);
+    //     await setUserId(response.user);
+    //     router.replace("/");
+    //     showSuccessToast("logged in");
+    //   }
 
-      setShowSnack(true);
-    } catch (error: any) {
-      showErrorToast("Something went wrong try again later");
+    //   setShowSnack(true);
+    // } catch (error: any) {
+    //   showErrorToast("Something went wrong try again later");
 
-      toggleSnack();
-    }
+    //   toggleSnack();
+    // }
+    router.push("/");
   };
 
   return (
