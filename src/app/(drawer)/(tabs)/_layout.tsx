@@ -18,7 +18,7 @@ export default function TabLayout() {
           height: insets.bottom,
           backgroundColor: colors.white,
           borderTopWidth: 0,
-          elevation: 5,
+          elevation: 0.5,
           shadowColor: colors.blackHover,
           shadowOpacity: 0.1,
           shadowOffset: { width: 0, height: -2 },
@@ -34,7 +34,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="Crops"
+        name="orchards"
         options={{
           title: "Crops",
           tabBarIcon: ({ color, size }) => <Trees color={color} size={size} />,

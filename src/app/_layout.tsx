@@ -26,7 +26,7 @@ export default function RootLayout() {
       {/* <RouteGuard> */}
       <PaperProvider theme={theme}>
         <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+          <Stack.Screen name="(drawer)" options={{ headerShown: false }}/>
         </Stack>
       </PaperProvider>
       {/* </RouteGuard> */}
