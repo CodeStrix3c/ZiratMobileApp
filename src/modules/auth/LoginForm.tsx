@@ -1,6 +1,7 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useLoginMutation } from "@/src/hooks/useUserProfileMutation";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import { View } from "react-native";
 import { Button, Divider, Snackbar, Text } from "react-native-paper";
@@ -13,27 +14,30 @@ export default function LoginForm() {
 
   const [showSnack, setShowSnack] = useState(false);
   const toggleSnack = () => setShowSnack((p) => !p);
+  const { setUserToken, setUserId } = useAuth();
 
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
-  const { login } = useAuth();
 
   const onSubmit = async (data: any) => {
     // try {
     //   const response = await loginMutate({
-    //     email: data.email,
+    //     phone: data.phone,
     //     password: data.password,
     //   });
-
-    //   console.log("Login success:", response);
-
-    //   await saveAuth(response.token, response.user);
+    //   if (response.success) {
+    //     await setUserToken(response.token);
+    //     await setUserId(response.user);
+    //     router.replace("/");
+    //     showSuccessToast("logged in");
+    //   }
 
     //   setShowSnack(true);
     // } catch (error: any) {
-    //   console.log("Login failed:", error);
+    //   showErrorToast("Something went wrong try again later");
+
     //   toggleSnack();
     // }
-    await login("fakeToken", 100);
+    router.push("/");
   };
 
   return (
@@ -46,16 +50,17 @@ export default function LoginForm() {
 
         <FormInput
           control={control}
-          name="email"
-          label="Email"
-          error={errors.email}
+          name="phone"
+          label="Phone Number"
+          type="number"
+          error={errors.phone}
         />
 
         <FormInput
           control={control}
           name="password"
           label="Password"
-          secure
+          type="password"
           error={errors.password}
         />
 

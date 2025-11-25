@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Controller } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";
 
@@ -22,9 +22,20 @@ export default function FormInput({
   iconSize = 22,          // 🔥 NEW icon size prop
   onPressIcon,
   defaultValue = "",
+  error,
   ...props
-}: any) {
+}: FormInputProps) {
   const [showPassword, setShowPassword] = useState(false);
+
+  const keyboardTypeMap = {
+    text: "default",
+    number: "numeric",
+    email: "email-address",
+    phone: "phone-pad",
+    password: "default",
+  } as const;
+
+  const isSecure = type === "password";
 
   return (
     <Controller
@@ -40,9 +51,17 @@ export default function FormInput({
               label={optional ? `${label} (Optional)` : label}
               mode="outlined"
               value={value}
-              onChangeText={onChange}
+              onChangeText={(text) => {
+                if (type === "number") {
+                  const numericValue = text.replace(/[^0-9]/g, "");
+                  onChange(numericValue);
+                } else {
+                  onChange(text);
+                }
+              }}
               onBlur={onBlur}
-              secureTextEntry={secure && !showPassword}
+              secureTextEntry={isSecure && !showPassword}
+              keyboardType={keyboardTypeMap[type]}
               error={showError}
               contentStyle={{}}
 
@@ -60,7 +79,7 @@ export default function FormInput({
 
               /* RIGHT ICON (for password) */
               right={
-                secure ? (
+                isSecure && (
                   <TextInput.Icon
                     icon={showPassword ? "eye-off" : "eye"}
                     color={colorMap.primary}
@@ -76,7 +95,7 @@ export default function FormInput({
 
             {showError && (
               <HelperText type="error" visible>
-                {error.message}
+                {(fieldError || error)?.message}
               </HelperText>
             )}
           </View>
