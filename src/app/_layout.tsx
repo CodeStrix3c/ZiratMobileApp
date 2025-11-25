@@ -10,14 +10,13 @@ import AppProvider from "../contexts/AppProvider";
 export default function RootLayout() {
   return (
     <AppProvider>
-      <RouteGuard>
-        <ToastManager />
-        <PaperProvider theme={theme}>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-          </Stack>
-        </PaperProvider>
-      </RouteGuard>
+      {/* <RouteGuard> */}
+      <PaperProvider theme={theme}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(drawer)" options={{ headerShown: false }}/>
+        </Stack>
+      </PaperProvider>
+      {/* </RouteGuard> */}
     </AppProvider>
   );
 }
