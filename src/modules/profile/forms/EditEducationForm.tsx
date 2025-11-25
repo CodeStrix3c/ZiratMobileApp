@@ -7,7 +7,7 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import {
   useEducationQuery,
   useEducationUpdateMutation,
-} from "@/src/hooks/useUserProfileMutation";
+} from "@/src/hooks/userQueryHooks";
 
 export default function EditEducationForm({ onClose }) {
   const { userProfileId } = useAuth();

@@ -42,7 +42,7 @@ export default function MultiSelectInput({
             onSelect={onChange}
             options={options}
           />
-          {error && <Text style={styles.error}>{error.message}</Text>}
+          {error && <Text style={styles.error}>{error}</Text>}
         </View>
       )}
     />

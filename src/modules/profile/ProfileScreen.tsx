@@ -16,7 +16,7 @@ import {
   useProfessionDeleteMutation,
   useProfessionQuery,
   useProfileQuery,
-} from "@/src/hooks/useUserProfileMutation";
+} from "@/src/hooks/userQueryHooks";
 
 import ProfileHeader from "./components/ProfileHeader";
 import SectionCard from "./components/SectionCard";
@@ -85,9 +85,7 @@ export default function ProfileScreen() {
   return (
     <ScrollView className="flex-1 bg-white p-5">
       {/* Profile Header */}
-      <TouchableOpacity
-        onPress={() => router.push("/vendor/profile-completion")}
-      >
+      <TouchableOpacity onPress={() => router.push("/vendor/register")}>
         <Text
           style={{
             fontSize: 22,

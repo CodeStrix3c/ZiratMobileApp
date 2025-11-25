@@ -25,7 +25,7 @@ export default function OTPSection({ control, errors, onResend }: Props) {
         name="otp"
         label="Enter OTP"
         error={errors?.otp}
-        keyboardType="number-pad"
+        type="number"
       />
 
       {onResend && (

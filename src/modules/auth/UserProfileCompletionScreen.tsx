@@ -2,13 +2,6 @@ import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Alert, Button, ScrollView, View } from "react-native";
 
-import { profileSchema } from "@/src/schemas/profileSchema";
-import {
-  addressSchema,
-  educationSchema,
-  professionSchema,
-} from "@/src/schemas/registrationSchema";
-
 import { useZodForm } from "@/src/hooks/useZodForm";
 
 import AddressSection from "@/src/components/form/sections/AddressSection";
@@ -23,12 +16,18 @@ import {
   useProfessionMutation,
   useProfileMutation,
   useProfileQuery,
-} from "@/src/hooks/useUserProfileMutation";
+} from "@/src/hooks/userQueryHooks";
 
+import { addressSchema } from "@/src/schemas/user/address.schema";
+import { educationSchema } from "@/src/schemas/user/education.schema";
+import { professionSchema } from "@/src/schemas/user/profession.schema";
+import { profileSchema } from "@/src/schemas/user/profile.schema";
 import { router } from "expo-router";
 
 export default function UserProfileCompletionScreen() {
   const { section } = useLocalSearchParams();
+
+  console.log(section, '""""""');
 
   const sectionMap = {
     profile: 0,
@@ -41,7 +40,7 @@ export default function UserProfileCompletionScreen() {
   const [step, setStep] = useState(initialStep);
 
   const { userId, userProfileId, setUserProfileId } = useAuth();
-  if (!userId) return null;
+  // if (!userId) return null;
 
   const { mutateAsync: saveProfile } = useProfileMutation();
   const { mutateAsync: saveAddress } = useAddressMutation();

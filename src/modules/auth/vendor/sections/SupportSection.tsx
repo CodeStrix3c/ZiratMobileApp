@@ -24,7 +24,7 @@ export default function SupportSection({ control, errors }) {
           { label: "Yes", value: "yes" },
           { label: "No", value: "no" },
         ]}
-        error={errors.advisorySupport}
+        error={errors?.advisorySupport}
       />
 
       {/* Field Staff Available */}
@@ -37,7 +37,7 @@ export default function SupportSection({ control, errors }) {
           { label: "Yes", value: "yes" },
           { label: "No", value: "no" },
         ]}
-        error={errors.fieldStaffAvailable}
+        error={errors?.fieldStaffAvailable?.message}
       />
 
       {/* Conditional Field Staff Count */}
@@ -47,7 +47,7 @@ export default function SupportSection({ control, errors }) {
           name="fieldStaffCount"
           label="Number of Field Staff"
           type="number"
-          error={errors.fieldStaffCount}
+          error={errors?.fieldStaffCount?.message}
         />
       )}
 
@@ -56,7 +56,7 @@ export default function SupportSection({ control, errors }) {
         control={control}
         name="afterSalesService"
         label="After-Sales Service (Warranty / Return / Replacement policy)"
-        error={errors.afterSalesService}
+        error={errors?.afterSalesService?.message}
       />
 
       {/* Delivery Range */}
@@ -65,7 +65,7 @@ export default function SupportSection({ control, errors }) {
         name="deliveryRange"
         label="Preferred Delivery Area Range (Sq. KMs)"
         type="number"
-        error={errors.deliveryRange}
+        error={errors?.deliveryRange?.message}
       />
 
       {/* Computer/Laptop Availability */}
@@ -78,7 +78,7 @@ export default function SupportSection({ control, errors }) {
           { label: "Yes", value: "yes" },
           { label: "No", value: "no" },
         ]}
-        error={errors.computerAvailable}
+        error={errors?.computerAvailable}
       />
 
       {/* Delivery Vehicle Availability */}
