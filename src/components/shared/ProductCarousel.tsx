@@ -1,18 +1,12 @@
+import { ProductCarouselProps } from "@/src/types/product-carousel.type";
 import { router } from "expo-router";
 import { Heart } from "lucide-react-native";
 import React from "react";
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { Dimensions, FlatList, Image, Pressable, Text, View, } from "react-native";
 import RatingStars from "../../components/shared/RatingStars";
 import { colors } from "../../constants/colors";
 
-export default function ProductCarousel({ items, imageMapper }) {
+export default function ProductCarousel({ items, imageMapper }:ProductCarouselProps) {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.42;
   const imageSize = screenWidth * 0.40;

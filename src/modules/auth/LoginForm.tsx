@@ -42,7 +42,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <View style={{ padding: 20 }}>
+      <View style={{ padding: 20, }}>
         <Text variant="headlineSmall">Login</Text>
         <Text variant="labelLarge">Enter your credentials below</Text>
 

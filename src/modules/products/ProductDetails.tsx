@@ -1,20 +1,22 @@
+import AddToCartButton from "@/src/components/shared/AddToCartButton";
+import BuyNowButton from "@/src/components/shared/BuyNowButton";
+import ProductDetailCarousel from "@/src/components/shared/ProductDetailCarousel";
+import RatingStars from "@/src/components/shared/RatingStars";
+import { colors } from "@/src/constants/colors";
 import { useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
-import { Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { colors } from "../../constants/colors";
+import { IndianRupee } from "lucide-react-native";
+import React from "react";
+import { ScrollView, Text, View } from "react-native";
 import { imageMapper } from "../../Data/imageMapper";
 import products from "../../Data/products.json";
 
-const { width } = Dimensions.get("window");
-
 export default function ProductDetails() {
   const { productId } = useLocalSearchParams();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!productId) {
     return (
       <View className="flex-1 justify-center items-center">
-        <Text className="text-lg text-gray-700">Please provide a product ID</Text>
+        <Text className="text-lg text-dark">Please provide a product ID</Text>
       </View>
     );
   }
@@ -24,115 +26,114 @@ export default function ProductDetails() {
   if (!product) {
     return (
       <View className="flex-1 justify-center items-center">
-        <Text className="text-lg text-gray-700">Product not found</Text>
+        <Text className="text-lg text-dark">Product not found</Text>
       </View>
     );
   }
 
-  const handleScroll = (event) => {
-    const index = Math.round(event.nativeEvent.contentOffset.x / width);
-    setCurrentImageIndex(index);
-  };
-
   return (
-    <View className="flex-1 bg-light">
+    <View className="flex-1">
       <ScrollView>
-        {/* Image Carousel */}
-        <View className="mt-4 relative">
-          <ScrollView
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            onScroll={handleScroll}
-            scrollEventThrottle={16}
-          >
-            {product.photos.map((photoKey, index) => {
-              const imgSource = imageMapper[photoKey];
-              if (!imgSource) return null; // ignore missing
-              return (
-                <Image
-                  key={index}
-                  source={imgSource}
-                  className="w-full h-72"
-                  resizeMode="cover"
-                />
-              );
-            })}
-          </ScrollView>
 
-          {/* Badge */}
-          {product.label && (
-            <View className="absolute top-4 left-4 px-3 py-1 rounded-full bg-secondary z-10">
-              <Text className="text-white font-semibold text-sm">{product.label}</Text>
-            </View>
+        <ProductDetailCarousel
+          photos={product.photos}
+          imageMapper={imageMapper}
+          label={product.label}
+        />
+
+        <View className="px-6 mt-8 items-start">
+           <Text className="text-4xl font-bold text-dark mb-2 text-left">
+            {product.title}
+          </Text>
+          <Text className="text-xl mb-1 text-left">
+            Category: {product.category}
+          </Text>
+          {product.saltComposition && (
+            <Text className="text-xl mb-2 text-dark text-left">
+              <Text className="font-semibold text-primary">
+                {product.saltComposition}
+              </Text>
+            </Text>
           )}
 
-          {/* Image Number */}
-          <View className="absolute bottom-4 right-4 px-2 py-1 rounded-full bg-black/50 z-10">
-            <Text className="text-white text-xs font-semibold">
-              {currentImageIndex + 1} / {product.photos.length}
-            </Text>
-          </View>
-        </View>
+          <View className="flex-row items-center mb-2 w-full">
 
-        {/* Product Info */}
-        <View className="p-4 space-y-4">
-          <Text className="text-2xl font-bold text-dark">{product.title}</Text>
-          <Text className="text-sm text-dark">Category: {product.category}</Text>
+            <View className="flex-row items-center">
+              <IndianRupee size={28} color={colors.dark} />
+              <Text className="text-3xl line-through font-bold text-dark ">
+                {product.price}
+              </Text>
+            </View>
 
-          <View className="flex-row items-center space-x-4">
-            <Text className="text-2xl font-bold text-dark">₹{product.price}</Text>
             {product.discountPrice && (
-              <Text className="text-sm line-through text-neutral">₹{product.discountPrice}</Text>
+              <View className="flex-row items-center ml-1">
+                <IndianRupee size={16} color={colors.dark} />
+                <Text className="text-xl text-dark ">
+                  {product.discountPrice}
+                </Text>
+              </View>
             )}
-            <Text className={`text-sm font-medium ${product.inStock ? "text-primary" : "text-error"}`}>
+            <Text
+              className={`text-sm px-2 py-1 bg-primary rounded-xl ml-3 ${
+                product.inStock ? "text-light" : "text-error"
+              }`}
+            >
               {product.inStock ? "In Stock" : "Out of Stock"}
             </Text>
           </View>
-
-          {/* Description */}
-          <View className="bg-white p-4 rounded-lg shadow-sm">
-            <Text className="font-semibold mb-2 text-dark text-base">Product Description</Text>
-            {Array.isArray(product.description)
-              ? product.description.map((desc, index) => (
-                  <Text key={index} className="text-dark mb-1 text-sm leading-6">
-                    • {desc}
-                  </Text>
-                ))
-              : <Text className="text-dark text-sm leading-6">{product.description}</Text>}
+          <View className="flex-row justify-start mb-6">
+            <RatingStars rating={product.rating} />
           </View>
 
-          {/* Packaging */}
+          <Text className="font-semibold text-xl text-dark text-left mb-2">
+            Product Description:
+          </Text>
+
+          {Array.isArray(product.description)
+            ? product.description.map((desc, index) => (
+                <Text key={index} className="text-dark text-lg text-left mb-2">
+                  {desc}
+                </Text>
+              ))
+            : (
+              <Text className="text-dark text-lg text-left">
+                {product.description}
+              </Text>
+            )}
+
+          {product.dosage && (
+            <Text className="text-xl text-dark text-left mb-4">
+              <Text className="font-semibold text-dark">Dosage: </Text>
+              {product.dosage}
+            </Text>
+          )}
+
           {product.packaging && (
-            <View className="bg-white p-4 rounded-lg shadow-sm">
-              <Text className="font-semibold mb-2 text-dark text-base">Packaging</Text>
+            <>
+              <Text className="font-semibold text-xl text-dark text-left mb-2">
+                Packaging:
+              </Text>
+
               {product.packaging.map((pack, index) => (
-                <Text key={index} className="text-dark mb-1 text-sm">
-                  • {pack.type}: {pack.size} {pack.weight ? `(${pack.weight})` : ""}
+                <Text key={index} className="text-dark text-lg text-left mb-1">
+                  • {pack.type}: {pack.size}{" "}
+                  {pack.weight ? `(${pack.weight})` : ""}
                   {pack.packOf ? ` - Pack of ${pack.packOf}` : ""}
                 </Text>
               ))}
-            </View>
+            </>
           )}
-
-          {/* Tags */}
           {product.tag && (
-            <View className="flex-row flex-wrap items-center space-x-2 mt-2">
-              <Text className="text-dark text-sm font-medium">Tags:</Text>
-              <Text className="text-primary text-sm font-semibold">{product.tag}</Text>
-            </View>
+            <Text className="text-dark text-lg font-medium text-left mt-4">
+              Tags: <Text className="text-primary font-semibold">{product.tag}</Text>
+            </Text>
           )}
         </View>
       </ScrollView>
 
-      {/* Sticky Buttons */}
-      <View className="flex-row p-4 space-x-3 bg-light border-t border-gray-200">
-        <TouchableOpacity className="flex-1 py-3 rounded-lg items-center shadow" style={{ backgroundColor: colors.secondary }}>
-          <Text className="font-bold text-light text-lg">Buy Now</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className="flex-1 py-3 rounded-lg items-center shadow" style={{ backgroundColor: colors.neutral }}>
-          <Text className="font-bold text-dark text-lg">Add to Cart</Text>
-        </TouchableOpacity>
+      <View className="flex-row p-4 my-2">
+        <BuyNowButton onPress={() => console.log("Buy Now Clicked")} />
+        <AddToCartButton onPress={() => console.log("Added to Cart")} />
       </View>
     </View>
   );
