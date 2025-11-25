@@ -57,7 +57,7 @@ export default function StepB_BasicInfo() {
         </Text>
 
         {/* Card */}
-        <View className="bg-light rounded-2xl p-5 shadow-md shadow-dark w-full">
+        <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
 
           <Text className="text-lg font-semibold mb-3 text-primary">
             Variety & Planting Details

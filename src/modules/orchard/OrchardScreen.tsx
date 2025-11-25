@@ -38,7 +38,7 @@ export default function OrchardRegistration() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-white w-full" showsVerticalScrollIndicator={false}>
+    <ScrollView className="flex-1 bg-light w-full" showsVerticalScrollIndicator={false}>
       
       {/* STEP INDICATOR */}
       <View className="flex-row justify-between py-5">
@@ -52,17 +52,17 @@ export default function OrchardRegistration() {
               <View
                 className={`
                   w-8 h-8 rounded-full items-center justify-center
-                  ${step >= stepNumber ? "bg-primary" : "bg-gray-300"}
+                  ${step >= stepNumber ? "bg-primary" : "bg-neutral"}
                 `}
               >
-                <Text className="text-white font-bold text-base">{stepNumber}</Text>
+                <Text className="text-light font-bold text-base">{stepNumber}</Text>
               </View>
 
               {/* Step Label */}
               <Text
                 className={`
                   mt-2 text-[10px] font-medium text-center
-                  ${step >= stepNumber ? "text-primary font-bold" : "text-gray-500"}
+                  ${step >= stepNumber ? "text-primary font-bold" : "text-neutral"}
                 `}
               >
                 {label}
@@ -92,9 +92,9 @@ export default function OrchardRegistration() {
         {step > 1 && (
           <TouchableOpacity
             onPress={handleBack}
-            className="flex-1 mr-2 bg-gray-200 py-3 rounded-lg border border-gray-400 items-center justify-center"
+            className="flex-1 mr-2 bg-dark-hover py-3 rounded-lg border border-dark items-center justify-center"
           >
-            <Text className="text-gray-700 text-base font-bold">Back</Text>
+            <Text className="text-dark text-base font-bold">Back</Text>
           </TouchableOpacity>
         )}
 
@@ -106,7 +106,7 @@ export default function OrchardRegistration() {
             ${step === 1 ? "flex-1" : "flex-1 ml-2"}
           `}
         >
-          <Text className="text-white text-base font-bold">
+          <Text className="text-light text-base font-bold">
             {step < 9 ? "Next" : "Submit"}
           </Text>
         </TouchableOpacity>

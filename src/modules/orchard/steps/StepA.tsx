@@ -44,7 +44,7 @@ export default function StepA_BasicInfo() {
         </Text>
 
         {/* Form Card */}
-        <View className="bg-light rounded-2xl px-4 shadow-md shadow-dark w-full ">
+        <View className="bg-light rounded-2xl px-4 shadow-md shadow-neutral w-full ">
 
           <Text className="text-lg font-semibold mb-3 text-primary">
             Basic / Mandatory Information
