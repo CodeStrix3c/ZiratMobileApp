@@ -8,7 +8,7 @@ export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "register">("register");
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <View style={{ flex: 1, padding: 20,}}>
       {mode === "login" ? <LoginForm /> : <UserRegistration />}
 
       <Button

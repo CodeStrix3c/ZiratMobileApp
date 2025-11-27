@@ -7,7 +7,7 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import {
   useAddressQuery,
   useAddressUpdateMutation,
-} from "@/src/hooks/useUserProfileMutation";
+} from "@/src/hooks/userQueryHooks";
 
 export default function EditAddressForm({ onClose }) {
   const { userProfileId } = useAuth();

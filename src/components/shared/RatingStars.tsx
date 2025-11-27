@@ -1,9 +1,10 @@
+import { RatingStarsProps } from "@/src/types/rating-stars.types";
 import { Star } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
 import { colors } from "../../constants/colors";
 
-export default function RatingStars({ rating, size = 16 }) {
+export default function RatingStars({ rating, size = 16 }:RatingStarsProps) {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
 

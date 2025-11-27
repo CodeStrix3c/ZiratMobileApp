@@ -7,7 +7,7 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import {
   useProfileQuery,
   useProfileUpdateMutation,
-} from "@/src/hooks/useUserProfileMutation";
+} from "@/src/hooks/userQueryHooks";
 
 export default function EditProfileForm({ onClose }) {
   const { userId, userProfileId } = useAuth();

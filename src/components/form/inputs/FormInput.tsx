@@ -39,6 +39,8 @@ export default function FormInput({
   defaultValue = "",
   ...props
 }: FormInputProps) {
+  console.log(error, "error");
+
   const [showPassword, setShowPassword] = useState(false);
 
   const keyboardTypeMap = {

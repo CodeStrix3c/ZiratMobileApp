@@ -1,45 +1,40 @@
-import FormInput from "@/src/components/form/inputs/FormInput";
-import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
-import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import React from "react";
 import { useWatch } from "react-hook-form";
 import { View } from "react-native";
+
+import FormInput from "@/src/components/form/inputs/FormInput";
+import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
+import ChipInput from "../ChipInput";
 
 export default function OperationalSection({ control, errors }) {
   const deliveryService = useWatch({
     control,
     name: "deliveryService",
-    defaultValue: "",
+  });
+  const serviceAreas = useWatch({
+    control,
+    name: "serviceArea",
   });
 
-  const serviceAreaOptions = [
-    { value: "villageA", label: "Village A" },
-    { value: "villageB", label: "Village B" },
-    { value: "villageC", label: "Village C" },
-    { value: "blockX", label: "Block X" },
-    { value: "blockY", label: "Block Y" },
-  ];
+  console.log(errors, "errors in operation");
 
   return (
     <View style={{ padding: 20 }}>
-      {/* YEARS IN BUSINESS */}
       <FormInput
         control={control}
         name="yearsInBusiness"
         label="Years in Business"
         type="number"
-        error={errors.yearsInBusiness}
+        error={errors?.yearsInBusiness?.message}
       />
 
-      {/* DISTRIBUTOR TIE-UPS */}
       <FormInput
         control={control}
         name="distributorTieUps"
         label="Distributor / Company Tie-ups"
-        error={errors.distributorTieUps}
+        error={errors?.distributorTieUps?.message}
       />
 
-      {/* DELIVERY SERVICE */}
       <SingleSelectInput
         control={control}
         name="deliveryService"
@@ -49,27 +44,31 @@ export default function OperationalSection({ control, errors }) {
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
         ]}
-        error={errors.deliveryService}
+        error={errors?.deliveryService}
       />
 
-      {/* CONDITIONAL SERVICE AREA */}
+      {/* Show Chip Input Only When Yes */}
       {deliveryService === "yes" && (
-        <MultiSelectInput
-          control={control}
-          name="serviceArea"
-          label="Service Area (Villages / Blocks covered)"
-          options={serviceAreaOptions}
-          error={errors.serviceArea}
-        />
+        <>
+          <ChipInput
+            control={control}
+            name="serviceArea"
+            label="Service Areas"
+            error={
+              serviceAreas?.length === 0
+                ? { message: "At least one service area is required." }
+                : errors.serviceArea?.message
+            }
+          />
+        </>
       )}
 
-      {/* MONTHLY SALES */}
       <FormInput
         control={control}
         name="averageMonthlySales"
         label="Average Monthly Sales Volume (optional)"
         type="number"
-        error={errors.averageMonthlySales}
+        error={errors?.averageMonthlySales?.message}
       />
     </View>
   );

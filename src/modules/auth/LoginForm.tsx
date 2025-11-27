@@ -1,12 +1,12 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useLoginMutation } from "@/src/hooks/useUserProfileMutation";
+import { useLoginMutation } from "@/src/hooks/userQueryHooks";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { View } from "react-native";
 import { Button, Divider, Snackbar, Text } from "react-native-paper";
 import { useZodForm } from "../../hooks/useZodForm";
-import { LoginSchema } from "../../schemas/auth.schema";
+import { LoginSchema } from "../../schemas/shared/login.schema";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
@@ -42,7 +42,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <View style={{ padding: 20 }}>
+      <View style={{ padding: 20, }}>
         <Text variant="headlineSmall">Login</Text>
         <Text variant="labelLarge">Enter your credentials below</Text>
 
