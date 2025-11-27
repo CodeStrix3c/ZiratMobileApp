@@ -15,7 +15,6 @@ import StepI from "./steps/StepI";
 export default function OrchardRegistration() {
   const [step, setStep] = useState(1);
 
-  // 🔥 Correct step list for 9 steps
   const steps = [
     "Basic Info",
     "Variety",

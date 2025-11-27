@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, FieldError } from "react-hook-form";
 import { View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";
 
@@ -11,18 +11,32 @@ const colorMap: any = {
   error: "#f44336",
 };
 
+interface FormInputProps {
+  control: Control<any>;
+  name: string;
+  label: string;
+  type?: "text" | "number" | "email" | "phone" | "password";
+  optional?: boolean;
+  icon?: string | null;
+  iconColor?: "primary" | "secondary" | "dark" | "light" | "error";
+  iconSize?: number;
+  onPressIcon?: () => void;
+  defaultValue?: string;
+  error?: FieldError;
+  [key: string]: any; // For other TextInput props
+}
+
 export default function FormInput({
   control,
   name,
   label,
-  secure = false,
+  type = "text",
   optional = false,
   icon = null,
   iconColor = "secondary",
-  iconSize = 22,          // 🔥 NEW icon size prop
+  iconSize = 22,
   onPressIcon,
   defaultValue = "",
-  error,
   ...props
 }: FormInputProps) {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,8 +56,8 @@ export default function FormInput({
       control={control}
       name={name}
       defaultValue={defaultValue}
-      render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => {
-        const showError = !optional && !!error;
+      render={({ field: { onChange, value, onBlur }, fieldState: { error: fieldError } }) => {
+        const showError = !optional && !!fieldError;
 
         return (
           <View className="mb-5 w-full">
@@ -70,8 +84,8 @@ export default function FormInput({
                 icon ? (
                   <TextInput.Icon
                     icon={icon}
-                    color={colorMap[iconColor] ?? colorMap.secondary}
-                    size={iconSize}                   // 🔥 icon size applied here
+                    color={colorMap[iconColor] || colorMap.secondary}
+                    size={iconSize}
                     onPress={onPressIcon}
                   />
                 ) : undefined
@@ -79,14 +93,16 @@ export default function FormInput({
 
               /* RIGHT ICON (for password) */
               right={
-                isSecure && (
+                isSecure ? (
                   <TextInput.Icon
                     icon={showPassword ? "eye-off" : "eye"}
                     color={colorMap.primary}
-                    size={iconSize}                   // 🔥 icon size applied here too
+                    size={iconSize}
                     onPress={() => setShowPassword((p) => !p)}
                   />
-                ) : undefined
+                ) : (
+                  props.right
+                )
               }
 
               className="bg-light"
@@ -95,7 +111,7 @@ export default function FormInput({
 
             {showError && (
               <HelperText type="error" visible>
-                {(fieldError || error)?.message}
+                {fieldError?.message}
               </HelperText>
             )}
           </View>

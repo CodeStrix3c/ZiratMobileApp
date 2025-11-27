@@ -1,10 +1,13 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
+import { orchardSchema, OrchardSchemaType } from "@/src/schemas/orchard schemas/stepASchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { ScrollView, Text, View } from "react-native";
 
 export default function StepA_BasicInfo() {
-  const methods = useForm({
+  const methods = useForm<OrchardSchemaType>({
+    resolver: zodResolver(orchardSchema),
     defaultValues: {
       orchardName: "",
       orchardSize: "",
@@ -18,6 +21,7 @@ export default function StepA_BasicInfo() {
       latitude: "",
       longitude: "",
     },
+    mode: "onTouched",
   });
 
   const fields = [
@@ -33,6 +37,11 @@ export default function StepA_BasicInfo() {
     { name: "latitude", label: "Latitude", icon: "crosshairs-gps" },
     { name: "longitude", label: "Longitude", icon: "crosshairs" },
   ];
+
+  const onSubmit = (data: OrchardSchemaType) => {
+    console.log("Validated data:", data);
+    // next step ya API call yahan karo
+  };
 
   return (
     <FormProvider {...methods}>
@@ -55,11 +64,12 @@ export default function StepA_BasicInfo() {
             iconSize={20}
               key={field.name}
               control={methods.control}
-              name={field.name}
+              name={field.name }
               label={field.label}
               icon={field.icon}
               iconColor="secondary"
               className="w-full"
+              // error={methods.formState.errors[field.name]}
               
             />
           ))}
