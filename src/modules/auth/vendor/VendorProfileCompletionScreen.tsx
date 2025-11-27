@@ -1,15 +1,6 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-
-import {
-  financialPaymentSchema,
-  licensingComplianceSchema,
-  operationalDetailsSchema,
-  supportServicesSchema,
-  vendorProductSchema,
-} from "@/src/schemas/vendorRegistrationSchema";
+import { useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { Button, ScrollView, Text, View } from "react-native";
 
 import FinancialSection from "./sections/FinancialSection";
 import LicenseSection from "./sections/LicenseSection";
@@ -17,12 +8,69 @@ import OperationalSection from "./sections/OperationalSection";
 import ProductSection from "./sections/ProductSection";
 import SupportSection from "./sections/SupportSection";
 
-export default function VendorProfileCompletionScreen() {
-  const [step, setStep] = useState(4);
+// Queries & Mutations
+import {
+  useVendorFinancialMutation,
+  useVendorFinancialQuery,
+  useVendorLicenseMutation,
+  useVendorLicenseQuery,
+  useVendorOperationsMutation,
+  useVendorOperationsQuery,
+  useVendorProductsMutation,
+  useVendorProductsQuery,
+  useVendorSupportMutation,
+  useVendorSupportQuery,
+} from "@/src/hooks/vendorQueryHooks";
 
+// Schemas
+import { useAuth } from "@/src/contexts/AuthContext";
+import { financialPaymentSchema } from "@/src/schemas/vendor/finance.schema";
+import { licensingComplianceSchema } from "@/src/schemas/vendor/licensing.schema";
+import { operationalDetailsSchema } from "@/src/schemas/vendor/operations.schema";
+import { productPortfolioSchema } from "@/src/schemas/vendor/products.schema";
+import { supportServicesSchema } from "@/src/schemas/vendor/support.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+
+export default function VendorProfileCompletionScreen() {
+  const { section } = useLocalSearchParams();
+  const { vendorId } = useAuth();
+
+  const sectionMap = {
+    license: 0,
+    products: 1,
+    operations: 2,
+    financial: 3,
+    support: 4,
+  };
+
+  const initialStep = sectionMap[section as string] ?? 0;
+  const [step, setStep] = useState(initialStep);
+
+  // -------------------------------
+  // 🔍 Queries (FETCH EXISTING DATA)
+  // -------------------------------
+  const { data: licenseData } = useVendorLicenseQuery(vendorId);
+  const { data: productsData } = useVendorProductsQuery(vendorId);
+  const { data: operationsData } = useVendorOperationsQuery(vendorId);
+  const { data: financialData } = useVendorFinancialQuery(vendorId);
+  const { data: supportData } = useVendorSupportQuery(vendorId);
+
+  // -------------------------------
+  // 💾 Mutations (SAVE)
+  // -------------------------------
+  const { mutateAsync: saveLicense } = useVendorLicenseMutation();
+  const { mutateAsync: saveProducts } = useVendorProductsMutation();
+  const { mutateAsync: saveOperations } = useVendorOperationsMutation();
+  const { mutateAsync: saveFinancial } = useVendorFinancialMutation();
+  const { mutateAsync: saveSupport } = useVendorSupportMutation();
+
+  // -------------------------------
+  // 📌 Step Schemas
+  // -------------------------------
   const schemas = [
     licensingComplianceSchema,
-    vendorProductSchema,
+    productPortfolioSchema,
     operationalDetailsSchema,
     financialPaymentSchema,
     supportServicesSchema,
@@ -30,126 +78,137 @@ export default function VendorProfileCompletionScreen() {
 
   const methods = useForm({
     resolver: zodResolver(schemas[step]),
-    defaultValues: {},
+    mode: "onChange",
   });
 
   const {
+    handleSubmit,
+    trigger,
     control,
     formState: { errors },
-    handleSubmit,
   } = methods;
 
-  console.log(errors, "errors....+++");
+  // -------------------------------
+  // 🔄 PRE-FILL ON SCREEN LOAD
+  // -------------------------------
+  useEffect(() => {
+    const prefillMap = {
+      0: licenseData,
+      1: productsData,
+      2: operationsData,
+      3: financialData,
+      4: supportData,
+    };
 
-  const steps = [
-    "Licensing",
-    "Product Portfolio",
-    "Operational Info",
-    "Financial Info",
-    "Support & Services",
-  ];
-
-  const renderSection = () => {
-    switch (step) {
-      case 0:
-        return <LicenseSection control={control} errors={errors} />;
-      case 1:
-        return <ProductSection control={control} errors={errors} />;
-      case 2:
-        return <OperationalSection control={control} errors={errors} />;
-      case 3:
-        return <FinancialSection control={control} errors={errors} />;
-      case 4:
-        return <SupportSection control={control} errors={errors} />;
-      default:
-        return null;
+    const currentData = prefillMap[step];
+    if (currentData) {
+      Object.entries(currentData).forEach(([key, value]) =>
+        setValue(key, value)
+      );
     }
-  };
+  }, [
+    step,
+    licenseData,
+    productsData,
+    operationsData,
+    financialData,
+    supportData,
+  ]);
 
-  const onSubmit = (data) => {
-    if (step < 4) {
-      setStep(step + 1);
-      return;
-    }
-    console.log("FINAL VENDOR PROFILE SUBMISSION:", data);
+  // -------------------------------
+  // 🧩 Step Submit Handler
+  // -------------------------------
+  const handleStepSubmit = async (values: any) => {
+    setStep(step + 1);
+    // try {
+    //   if (step === 0) {
+    //     await saveLicense({ ...values, vendorId });
+    //     return setStep(1);
+    //   }
+    //   if (step === 1) {
+    //     await saveProducts({ ...values, vendorId });
+    //     return setStep(2);
+    //   }
+    //   if (step === 2) {
+    //     await saveOperations({ ...values, vendorId });
+    //     return setStep(3);
+    //   }
+    //   if (step === 3) {
+    //     await saveFinancial({ ...values, vendorId });
+    //     return setStep(4);
+    //   }
+    //   if (step === 4) {
+    //     await saveSupport({ ...values, vendorId });
+    //     Alert.alert("Success", "Vendor profile completed!");
+    //     return router.back();
+    //   }
+    // } catch (err: any) {
+    //   Alert.alert(
+    //     "Error",
+    //     err?.response?.data?.message || "Something went wrong"
+    //   );
+    // }
   };
 
   return (
     <FormProvider {...methods}>
-      <ScrollView>
-        <View style={{ flex: 1 }}>
-          {/* HEADER */}
-          <View style={{ padding: 20, backgroundColor: "#ffffff" }}>
-            <Text style={{ fontSize: 22, fontWeight: "700" }}>
-              Vendor Profile Completion
-            </Text>
+      <ScrollView style={{ flex: 1, padding: 20 }}>
+        <Text style={{ fontSize: 22, fontWeight: "bold" }}>
+          Vendor Profile Completion
+        </Text>
+        <Text style={{ marginBottom: 12 }}>Step {step + 1} of 5</Text>
 
-            <Text style={{ marginTop: 6, color: "#666" }}>
-              Step {step + 1} of {steps.length}: {steps[step]}
-            </Text>
+        {step === 0 && (
+          <LicenseSection
+            control={control}
+            errors={errors}
+            data={licenseData}
+          />
+        )}
+        {step === 1 && (
+          <ProductSection
+            control={control}
+            errors={errors}
+            data={productsData}
+          />
+        )}
+        {step === 2 && (
+          <OperationalSection
+            control={control}
+            errors={errors}
+            data={operationsData}
+          />
+        )}
+        {step === 3 && (
+          <FinancialSection
+            control={control}
+            errors={errors}
+            data={financialData}
+          />
+        )}
+        {step === 4 && (
+          <SupportSection
+            control={control}
+            errors={errors}
+            data={supportData}
+          />
+        )}
 
-            {/* PROGRESS BAR */}
-            <View
-              style={{
-                marginTop: 14,
-                height: 6,
-                backgroundColor: "#e5e5e5",
-                borderRadius: 10,
-                overflow: "hidden",
-              }}
-            >
-              <View
-                style={{
-                  width: `${((step + 1) / steps.length) * 100}%`,
-                  height: "100%",
-                  backgroundColor: "#4CAF50",
-                }}
-              />
-            </View>
-          </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginTop: 30,
+          }}
+        >
+          {step > 0 && (
+            <Button title="Back" onPress={() => setStep((prev) => prev - 1)} />
+          )}
 
-          <ScrollView showsVerticalScrollIndicator={false}>
-            {renderSection()}
-          </ScrollView>
-
-          {/* BUTTONS */}
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              padding: 20,
-            }}
-          >
-            {step > 0 ? (
-              <TouchableOpacity
-                onPress={() => setStep(step - 1)}
-                style={{
-                  backgroundColor: "#ddd",
-                  paddingVertical: 12,
-                  paddingHorizontal: 20,
-                  borderRadius: 10,
-                }}
-              >
-                <Text>Back</Text>
-              </TouchableOpacity>
-            ) : (
-              <View />
-            )}
-
-            <TouchableOpacity
-              onPress={methods.handleSubmit(onSubmit)}
-              style={{
-                backgroundColor: "#4CAF50",
-                paddingVertical: 12,
-                paddingHorizontal: 20,
-                borderRadius: 10,
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "600" }}>
-                {step === steps.length - 1 ? "Submit" : "Next"}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <Button
+            title={step === 4 ? "Save" : "Next"}
+            onPress={handleSubmit(handleStepSubmit)}
+          />
         </View>
       </ScrollView>
     </FormProvider>

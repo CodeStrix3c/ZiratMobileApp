@@ -1,36 +1,41 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, ScrollView, View } from "react-native";
 
-import OTPSection from "@/src/components/form/sections/OTPSection";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useZodForm } from "@/src/hooks/useZodForm";
-
-import { otpSchema } from "@/src/schemas/registrationSchema";
-import { vendorBusinessSchema } from "@/src/schemas/vendorRegistrationSchema";
-import { router } from "expo-router";
+import { useVendorProfileMutation } from "@/src/hooks/vendorQueryHooks";
+import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import BusinessSection from "./sections/BusinessSection";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
+import { useForm } from "react-hook-form";
+
 export default function VendorRegistration() {
-  const [step, setStep] = useState(0);
-  const [businessData, setBusinessData] = useState(null);
+  const { setVendorId, setVendorToken } = useAuth();
 
-  const schemas = [vendorBusinessSchema, otpSchema];
-  const { control, handleSubmit, formState } = useZodForm(schemas[step]);
-  const { errors } = formState;
-  console.log(errors, "error....");
+  const methods = useForm({
+    resolver: zodResolver(businessInformationSchema),
+    mode: "onChange",
+  });
 
-  const { setUserId, setUserToken } = useAuth();
+  const {
+    handleSubmit,
+    trigger,
+    control,
+    formState: { errors },
+  } = methods;
+  console.log(errors, "lllll");
 
-  const next = () => setStep((s) => s + 1);
-  const prev = () => setStep((s) => s - 1);
+  const { mutateAsync: saveVendor } = useVendorProfileMutation();
 
-  const onSubmit = async (data: any) => {
-    if (step === 0) {
-      setBusinessData(data);
-      next();
-    } else {
-      router.push("/vendor/profile-completion");
-    }
+  const onSubmit = async (data) => {
+    // try {
+    //   await saveVendor(data);
+    //   router.push("/vendor/profile-completion");
+    // } catch (err) {
+    //   console.log("Error saving vendor profile:", err);
+    // }
+    router.push("/vendor/profile-completion");
   };
 
   return (
@@ -40,22 +45,10 @@ export default function VendorRegistration() {
       showsVerticalScrollIndicator={false}
     >
       <View style={{ flex: 1, padding: 16 }}>
-        {step === 0 && <BusinessSection control={control} errors={errors} />}
+        <BusinessSection control={control} errors={errors} />
 
-        {step === 1 && <OTPSection control={control} errors={errors} />}
-
-        <View
-          style={{
-            flexDirection: "row",
-            marginTop: 20,
-            justifyContent: "space-between",
-          }}
-        >
-          {step > 0 && <Button title="Back" onPress={prev} />}
-          <Button
-            title={step === 1 ? "Submit" : "Next"}
-            onPress={handleSubmit(onSubmit)}
-          />
+        <View style={{ marginTop: 20 }}>
+          <Button title="Continue" onPress={handleSubmit(onSubmit)} />
         </View>
       </View>
     </ScrollView>

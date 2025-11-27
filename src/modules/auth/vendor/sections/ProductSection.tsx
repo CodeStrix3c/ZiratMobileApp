@@ -15,37 +15,34 @@ export default function ProductSection({ control, errors }) {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "customInputs",
+    name: "otherInputs",
   });
 
   return (
     <View style={{ padding: 20 }}>
-      {/* MULTIPLE SELECT */}
       <MultiSelectInput
         name="inputsSold"
         control={control}
         label="Type of Inputs Sold"
         options={inputOptions.map((i) => ({ value: i, label: i }))}
-        error={errors.inputsSold}
+        error={errors?.inputsSold?.message}
       />
 
-      {/* MAJOR BRANDS */}
       <FormInput
         control={control}
         name="majorBrands"
         label="Major Brands Stocked (e.g., Bayer, UPL)"
-        error={errors.majorBrands}
+        error={errors?.majorBrands?.message}
       />
 
-      {/* STORAGE CAPACITY */}
       <FormInput
         control={control}
+        optional
         name="storageCapacity"
         label="Storage Capacity (MT or Litres)"
-        error={errors.storageCapacity}
+        error={errors?.storageCapacity?.message}
       />
 
-      {/* DYNAMIC OTHER INPUTS */}
       <Text
         style={{
           fontWeight: "700",
@@ -72,7 +69,7 @@ export default function ProductSection({ control, errors }) {
               control={control}
               name={`otherInputs[${index}].name`}
               label="Input Name"
-              error={errors.otherInputs?.[index]?.name}
+              error={errors.otherInputs?.[index]?.name?.message}
             />
           </View>
 
@@ -82,7 +79,7 @@ export default function ProductSection({ control, errors }) {
               name={`otherInputs[${index}].stock`}
               label="Stock"
               type="number"
-              error={errors.otherInputs?.[index]?.stock}
+              error={errors.otherInputs?.[index]?.stock?.message}
             />
           </View>
 
@@ -99,7 +96,6 @@ export default function ProductSection({ control, errors }) {
         </View>
       ))}
 
-      {/* ADD NEW INPUT BUTTON */}
       <TouchableOpacity
         onPress={() => append({ name: "", stock: "" })}
         style={{

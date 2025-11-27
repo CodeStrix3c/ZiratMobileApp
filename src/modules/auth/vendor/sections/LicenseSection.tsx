@@ -5,48 +5,45 @@ import React from "react";
 import { View } from "react-native";
 
 export default function LicenseSection({ control, errors }) {
+  console.log(errors, "errors,");
+
   return (
     <View style={{ padding: 20, gap: 12 }}>
-      {/* Dealer License Number */}
       <FormInput
         control={control}
         name="dealerLicenseNumber"
         label="Dealer License Number"
-        error={errors.dealerLicenseNumber}
+        error={errors?.dealerLicenseNumber?.message}
       />
 
-      {/* License Start Date */}
       <FormDateInput
         control={control}
         name="licenseValidityStart"
         label="License Start Date"
-        error={errors.licenseValidityStart}
+        error={errors?.licenseValidityStart?.message}
       />
 
-      {/* License End Date */}
       <FormDateInput
         control={control}
         name="licenseValidityEnd"
         label="License Expiry Date"
-        error={errors.licenseValidityEnd}
+        error={errors?.licenseValidityEnd?.message}
       />
 
-      {/* GST */}
       <FormInput
         control={control}
         name="gstNumber"
         label="GST Number"
         optional
-        error={errors.gstNumber}
+        error={errors?.gstNumber?.message}
       />
 
-      {/* PAN */}
       <FormInput
         control={control}
         name="pan"
         label="PAN"
         optional
-        error={errors.pan}
+        error={errors?.pan?.message}
       />
 
       {/* License File Upload */}
@@ -54,7 +51,7 @@ export default function LicenseSection({ control, errors }) {
         control={control}
         name="licenseCopy"
         label="Upload License Copy"
-        error={errors.licenseCopy}
+        error={errors?.licenseCopy?.message}
       />
     </View>
   );

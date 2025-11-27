@@ -7,7 +7,7 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import {
   useProfessionQuery,
   useProfessionUpdateMutation,
-} from "@/src/hooks/useUserProfileMutation";
+} from "@/src/hooks/userQueryHooks";
 
 export default function EditProfessionForm({ onClose }) {
   const { userProfileId } = useAuth();
