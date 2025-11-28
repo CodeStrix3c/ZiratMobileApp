@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import { FormSectionProps } from "@/src/types/formSectionProps";
+import { useEffect } from "react";
 import { View } from "react-native";
 import FormInput from "../inputs/FormInput";
 import SingleSelectInput from "../inputs/SingleSelectInput";
@@ -15,8 +16,8 @@ export default function ProfileSection({
   errors,
   data,
   setValue,
-}: Props) {
-  console.log(control, errors, "in profile");
+}: FormSectionProps) {
+  
 
   // Prefill inputs when API data arrives
   useEffect(() => {
@@ -43,7 +44,7 @@ export default function ProfileSection({
         control={control}
         name="email"
         label="Email"
-        error={errors.email}
+        error={errors.email?.message}
         type="email"
       />
 
@@ -52,15 +53,15 @@ export default function ProfileSection({
         name="phone"
         label="Mobile Number"
         error={errors.phone?.message}
-        type="number"
+        type="phone"
       />
 
       <FormInput
         control={control}
         name="age"
         label="Age"
-        error={errors.age}
-        type="number"
+        error={errors.age?.message}
+        type="phone"
       />
 
       <SingleSelectInput
@@ -79,7 +80,7 @@ export default function ProfileSection({
         control={control}
         name="password"
         label="Password"
-        error={errors.password}
+        error={errors.password?.message}
         type="password"
       />
       <FormInput

@@ -5,7 +5,7 @@ import axiosVendor from "../api/client/axiosVendor";
 
 // ----------------------------------------------------
 export const saveVendorProfile = async (data) =>
-  (await axiosVendor.post("/api/core/vendor/profile", data)).data;
+  (await axiosVendor.post("/api/core/BusinessInformation", data)).data;
 
 export const updateVendorProfile = async (data) =>
   (await axiosVendor.put(`/api/core/vendor/profile/${data.vendorId}`, data))
@@ -21,7 +21,7 @@ export const getVendorProfile = async (vendorId) =>
 // 📜 LICENSE SECTION
 // ----------------------------------------------------
 export const saveVendorLicense = async (data) =>
-  (await axiosVendor.post("/api/core/vendor/license", data)).data;
+  (await axiosVendor.post("/api/core/LicensingCompliance", data)).data;
 
 export const updateVendorLicense = async (data) =>
   (await axiosVendor.put(`/api/core/vendor/license/${data.vendorId}`, data))
@@ -37,7 +37,7 @@ export const getVendorLicense = async (vendorId) =>
 // 🛒 PRODUCT PORTFOLIO
 // ----------------------------------------------------
 export const saveVendorProducts = async (data) =>
-  (await axiosVendor.post("/api/core/vendor/products", data)).data;
+  (await axiosVendor.post("/api/core/ProductPortfolio", data)).data;
 
 export const updateVendorProducts = async (data) =>
   (await axiosVendor.put(`/api/core/vendor/products/${data.vendorId}`, data))
@@ -49,11 +49,18 @@ export const deleteVendorProducts = async (vendorId) =>
 export const getVendorProducts = async (vendorId) =>
   (await axiosVendor.get(`/api/core/vendor/products/${vendorId}`)).data;
 
+//////////////////////////////////////////////////////
+export const getVendorInputs = async () =>
+  (await axiosVendor.get("/api/core/inputs")).data;
+
+export const getVendorBrands = async (vendorId) =>
+  (await axiosVendor.get(`/api/core/vendor/brands/${vendorId}`)).data;
+
 // ----------------------------------------------------
 // ⚙️ OPERATIONS SECTION
 // ----------------------------------------------------
 export const saveVendorOperations = async (data) =>
-  (await axiosVendor.post("/api/core/vendor/operations", data)).data;
+  (await axiosVendor.post("/api/core/OperationalDetails", data)).data;
 
 export const updateVendorOperations = async (data) =>
   (await axiosVendor.put(`/api/core/vendor/operations/${data.vendorId}`, data))
@@ -69,7 +76,7 @@ export const getVendorOperations = async (vendorId) =>
 // 💰 FINANCIAL SECTION
 // ----------------------------------------------------
 export const saveVendorFinancial = async (data) =>
-  (await axiosVendor.post("/api/core/vendor/financial", data)).data;
+  (await axiosVendor.post("/api/core/FinancialPayment", data)).data;
 
 export const updateVendorFinancial = async (data) =>
   (await axiosVendor.put(`/api/core/vendor/financial/${data.vendorId}`, data))
@@ -85,7 +92,7 @@ export const getVendorFinancial = async (vendorId) =>
 // 🧑‍🌾 SUPPORT & SERVICES
 // ----------------------------------------------------
 export const saveVendorSupport = async (data) =>
-  (await axiosVendor.post("/api/core/vendor/support", data)).data;
+  (await axiosVendor.post("/api/core/SupportServices", data)).data;
 
 export const updateVendorSupport = async (data) =>
   (await axiosVendor.put(`/api/core/vendor/support/${data.vendorId}`, data))

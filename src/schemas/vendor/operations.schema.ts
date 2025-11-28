@@ -8,7 +8,7 @@ export const operationalDetailsSchema = z
 
     distributorTieUps: z.string().min(1, "This field is required"),
 
-    deliveryService: z.preprocess(
+    deliveryServiceAvailable: z.preprocess(
       (val) => (val === undefined || val === null ? "" : val),
       z.string().nonempty("Delivery Service selection is required")
     ),
@@ -21,7 +21,7 @@ export const operationalDetailsSchema = z
         })
       )
     ),
-    averageMonthlySales: z.coerce
+    avgMonthlySalesVolume: z.coerce
       .number({ invalid_type_error: "Enter a number" })
       .optional(),
   })

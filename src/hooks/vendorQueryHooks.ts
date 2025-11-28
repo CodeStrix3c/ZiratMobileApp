@@ -8,7 +8,9 @@ import {
   deleteVendorProducts,
   deleteVendorProfile,
   deleteVendorSupport,
+  getVendorBrands,
   getVendorFinancial,
+  getVendorInputs,
   getVendorLicense,
   getVendorOperations,
   getVendorProducts,
@@ -85,6 +87,21 @@ export const useVendorProductsUpdateMutation = () =>
 
 export const useVendorProductsDeleteMutation = () =>
   useMutation({ mutationFn: deleteVendorProducts });
+
+//////////////////////////////////////////////////
+
+export const useVendorInputsQuery = () =>
+  useQuery({
+    queryKey: ["vendorInputs"],
+    queryFn: getVendorInputs,
+  });
+
+export const useVendorBrandsQuery = (vendorId) =>
+  useQuery({
+    queryKey: ["vendorBrands", vendorId],
+    queryFn: () => getVendorBrands(vendorId),
+    enabled: !!vendorId, // only fetch when vendorId exists
+  });
 
 // ----------------------------------------------------
 // ⚙️ OPERATIONAL DETAILS

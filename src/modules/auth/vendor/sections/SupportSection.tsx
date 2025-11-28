@@ -1,11 +1,10 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import React from "react";
+import { FormSectionProps } from "@/src/types/formSectionProps";
 import { useWatch } from "react-hook-form";
 import { View } from "react-native";
 
-export default function SupportSection({ control, errors }) {
-  // Watch fieldStaffAvailable to conditionally show fieldStaffCount
+export default function SupportSection({ control, errors }: FormSectionProps) {
   const fieldStaffAvailable = useWatch({
     control,
     name: "fieldStaffAvailable",
@@ -14,7 +13,6 @@ export default function SupportSection({ control, errors }) {
 
   return (
     <View style={{ padding: 20, gap: 12 }}>
-      {/* Agronomy Advisory Support */}
       <SingleSelectInput
         control={control}
         name="advisorySupport"
@@ -27,7 +25,6 @@ export default function SupportSection({ control, errors }) {
         error={errors?.advisorySupport}
       />
 
-      {/* Field Staff Available */}
       <SingleSelectInput
         control={control}
         name="fieldStaffAvailable"
@@ -46,7 +43,7 @@ export default function SupportSection({ control, errors }) {
           control={control}
           name="fieldStaffCount"
           label="Number of Field Staff"
-          type="number"
+          type="phone"
           error={errors?.fieldStaffCount?.message}
         />
       )}
@@ -64,7 +61,7 @@ export default function SupportSection({ control, errors }) {
         control={control}
         name="deliveryRange"
         label="Preferred Delivery Area Range (Sq. KMs)"
-        type="number"
+        type="phone"
         error={errors?.deliveryRange?.message}
       />
 

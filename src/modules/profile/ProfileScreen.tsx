@@ -1,5 +1,4 @@
 import { colors } from "@/src/constants/colors";
-import React from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -49,7 +48,6 @@ export default function ProfileScreen() {
   const { mutateAsync: deleteEducationApi } = useEducationDeleteMutation();
   const { mutateAsync: deleteProfessionApi } = useProfessionDeleteMutation();
 
-  // 🚀 Navigate to form page with correct section
   const goToSection = (section) => {
     router.push({
       pathname: "/userProfileCompletion",

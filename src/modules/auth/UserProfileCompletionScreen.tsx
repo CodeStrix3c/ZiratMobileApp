@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button, ScrollView, View } from "react-native";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
@@ -23,11 +23,10 @@ import { educationSchema } from "@/src/schemas/user/education.schema";
 import { professionSchema } from "@/src/schemas/user/profession.schema";
 import { profileSchema } from "@/src/schemas/user/profile.schema";
 import { router } from "expo-router";
+import { FormProvider } from "react-hook-form";
 
 export default function UserProfileCompletionScreen() {
   const { section } = useLocalSearchParams();
-
-  console.log(section, '""""""');
 
   const sectionMap = {
     profile: 0,
@@ -66,11 +65,13 @@ export default function UserProfileCompletionScreen() {
     professionSchema,
   ];
 
-  const { control, handleSubmit, formState, setValue } = useZodForm(
-    schemas[step]
-  );
-
-  const { errors } = formState;
+  const methods = useZodForm(schemas[step]);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = methods;
 
   const goToNextStep = () => setStep((prev) => prev + 1);
   const goToPreviousStep = () => setStep((prev) => prev - 1);
@@ -106,33 +107,35 @@ export default function UserProfileCompletionScreen() {
   };
 
   return (
-    <ScrollView style={{ flex: 1, padding: 20 }}>
-      {step === 0 && (
-        <ProfileSection
-          control={control}
-          errors={errors}
-          data={profileData}
-          setValue={setValue}
-        />
-      )}
-      {step === 1 && <AddressSection control={control} errors={errors} />}
-      {step === 2 && <EducationSection control={control} errors={errors} />}
-      {step === 3 && <ProfessionSection control={control} errors={errors} />}
+    <FormProvider {...methods}>
+      <ScrollView style={{ flex: 1, padding: 20 }}>
+        {step === 0 && (
+          <ProfileSection
+            control={control}
+            errors={errors}
+            data={profileData}
+            setValue={setValue}
+          />
+        )}
+        {step === 1 && <AddressSection control={control} errors={errors} />}
+        {step === 2 && <EducationSection control={control} errors={errors} />}
+        {step === 3 && <ProfessionSection control={control} errors={errors} />}
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          marginTop: 30,
-        }}
-      >
-        {step > 0 && <Button title="Back" onPress={goToPreviousStep} />}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginTop: 30,
+          }}
+        >
+          {step > 0 && <Button title="Back" onPress={goToPreviousStep} />}
 
-        <Button
-          title={step === 3 ? "Save" : "Next"}
-          onPress={handleSubmit(handleStepSubmit)}
-        />
-      </View>
-    </ScrollView>
+          <Button
+            title={step === 3 ? "Save" : "Next"}
+            onPress={handleSubmit(handleStepSubmit)}
+          />
+        </View>
+      </ScrollView>
+    </FormProvider>
   );
 }
