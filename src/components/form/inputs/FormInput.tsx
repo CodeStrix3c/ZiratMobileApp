@@ -1,4 +1,4 @@
-import { FormFieldProps } from "@/src/types/formFieldProps";
+import { FormSectionProps } from "@/src/types/formSectionProps";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { View } from "react-native";
@@ -14,7 +14,7 @@ export default function FormInput({
   error,
   keyboardType,
   ...props
-}: FormFieldProps) {
+}: FormSectionProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   const isSecure = type === "password";

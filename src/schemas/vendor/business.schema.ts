@@ -20,7 +20,7 @@ export const businessInformationSchema = z.object({
 
   village: z.string().min(1, "Required Field"),
   tehsil: z.string().min(1, "Required Field"),
-  // address: z.string().min(1, "Required Field"),
+  address: z.string().min(1, "Required Field"),
   state: z.string().min(1, "Required Field"),
 
   pincode: z.coerce
