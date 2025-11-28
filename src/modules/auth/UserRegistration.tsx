@@ -4,24 +4,39 @@ import {
   useLoginMutation,
   useOtpVerifyMutation,
   useProfileMutation,
-} from "@/src/hooks/useUserProfileMutation";
+} from "@/src/hooks/userQueryHooks";
 
 import { useAuth } from "@/src/contexts/AuthContext";
+import { otpSchema } from "@/src/schemas/shared/otp.schema";
 import { showErrorToast } from "@/src/utils/toast";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Alert, Button, View } from "react-native";
-import { useZodForm } from "../../hooks/useZodForm";
-import { otpSchema } from "../../schemas/otpSchema";
-import { profileSchema } from "../../schemas/profileSchema";
+import { profileSchema } from "../../schemas/user/profile.schema";
 
 export default function UserRegistration() {
   const [step, setStep] = useState(0);
   const [profileData, setProfileData] = useState<any>(null);
 
-  const schemas = [profileSchema, otpSchema];
-  const { control, handleSubmit, formState } = useZodForm(schemas[step]);
-  const { errors } = formState;
+  const profileMethods = useForm({
+    resolver: zodResolver(profileSchema),
+    mode: "onChange",
+  });
+
+  const otpMethods = useForm({
+    resolver: zodResolver(otpSchema),
+    mode: "onChange",
+  });
+
+  const methods = step === 0 ? profileMethods : otpMethods;
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = methods;
 
   const { mutateAsync: signupMutate, isPending: isSignupPending } =
     useProfileMutation();
@@ -32,22 +47,16 @@ export default function UserRegistration() {
 
   const nextStep = () => setStep((s) => s + 1);
   const prevStep = () => setStep((s) => s - 1);
+
   const onSubmit = async (data: any) => {
-    /* ----------------------------- */
-    /* STEP 0 — JUST STORE + NEXT    */
-    /* ----------------------------- */
     if (step === 0) {
-      setProfileData(data); // store name, email, phone, pass
-      nextStep(); // go to OTP screen
-      return; // important: STOP here
+      setProfileData(data);
+      nextStep();
+      return;
     }
 
-    /* ----------------------------- */
-    /* STEP 1 — CALL API + LOGIN     */
-    /* ----------------------------- */
     if (step === 1) {
       try {
-        // 1) Register user
         const signupRes = await signupMutate(profileData);
 
         if (!signupRes.success) {
@@ -55,7 +64,6 @@ export default function UserRegistration() {
           return;
         }
 
-        // 2) Verify OTP
         const otpRes = await verifyOtpMutate({
           phoneNumber: profileData.phone,
           otp: data.otp,
@@ -66,7 +74,6 @@ export default function UserRegistration() {
           return;
         }
 
-        // 3) Login
         const loginRes = await loginMutate({
           email: profileData.email,
           password: profileData.password,

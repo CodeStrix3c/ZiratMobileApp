@@ -1,7 +1,7 @@
 import React from "react";
 import { Controller } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
+import { HelperText } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 
 interface Option {
@@ -39,7 +39,9 @@ export default function SingleSelectInput({
             value={value}
             onSelect={onChange}
           />
-          {error && <Text style={styles.error}>{error.message}</Text>}
+          <HelperText type="error" visible>
+            {error?.message}
+          </HelperText>
         </View>
       )}
     />

@@ -16,6 +16,8 @@ export default function ProfileSection({
   data,
   setValue,
 }: Props) {
+  console.log(control, errors, "in profile");
+
   // Prefill inputs when API data arrives
   useEffect(() => {
     if (data) {
@@ -34,7 +36,7 @@ export default function ProfileSection({
         control={control}
         name="fullName"
         label="Full Name"
-        error={errors.fullName}
+        error={errors?.fullName?.message}
       />
 
       <FormInput
@@ -42,15 +44,15 @@ export default function ProfileSection({
         name="email"
         label="Email"
         error={errors.email}
-        keyboardType="email-address"
+        type="email"
       />
 
       <FormInput
         control={control}
         name="phone"
         label="Mobile Number"
-        error={errors.phone}
-        keyboardType="numeric"
+        error={errors.phone?.message}
+        type="number"
       />
 
       <FormInput
@@ -58,7 +60,7 @@ export default function ProfileSection({
         name="age"
         label="Age"
         error={errors.age}
-        keyboardType="numeric"
+        type="number"
       />
 
       <SingleSelectInput
@@ -73,20 +75,19 @@ export default function ProfileSection({
         error={errors.gender}
       />
 
-      {/* Remove password fields if editing profile; keep if needed */}
       <FormInput
         control={control}
         name="password"
         label="Password"
         error={errors.password}
-        secure
+        type="password"
       />
       <FormInput
         control={control}
         name="confirmPassword"
         label="Confirm Password"
         error={errors.confirmPassword}
-        secure
+        type="password"
       />
     </View>
   );

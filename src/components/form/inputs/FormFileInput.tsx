@@ -1,15 +1,17 @@
+import { colors } from "@/src/constants/colors";
 import * as DocumentPicker from "expo-document-picker";
 import * as Sharing from "expo-sharing";
+import { Eye, Upload, X } from "lucide-react-native";
 import React from "react";
 import { Controller } from "react-hook-form";
-import { Text, View } from "react-native";
-import { HelperText, TextInput } from "react-native-paper";
+import { Text, TouchableOpacity, View } from "react-native";
+import { HelperText } from "react-native-paper";
 
 export default function FormFileInput({
   control,
   name,
-  label,
-  optional = false,
+  label = "Upload License Copy",
+  optional = false, // if true → no error shown
   error,
 }) {
   const pickFile = async (onChange) => {
@@ -29,11 +31,8 @@ export default function FormFileInput({
 
   const viewFile = async (file) => {
     if (!file?.uri) return;
-
     try {
-      await Sharing.shareAsync(file.uri, {
-        mimeType: file.mimeType,
-      });
+      await Sharing.shareAsync(file.uri, { mimeType: file.mimeType });
     } catch (e) {
       console.log("Preview Error:", e);
     }
@@ -47,46 +46,64 @@ export default function FormFileInput({
         field: { onChange, value },
         fieldState: { error: fieldError },
       }) => {
-        const showError = !!(fieldError || error);
         const hasFile = !!value?.uri;
+
+        const showError = !optional && !!(fieldError || error);
 
         return (
           <View style={{ marginBottom: 20 }}>
-            <TextInput
-              label={optional ? `${label} (Optional)` : label}
-              mode="outlined"
-              value={value?.name || ""}
-              editable={false}
-              error={showError}
-              // LEFT: remove button when file exists
-              left={
-                hasFile ? (
-                  <TextInput.Icon
-                    icon="close"
-                    onPress={() => onChange(null)}
-                    forceTextInputFocus={false}
-                  />
-                ) : undefined
-              }
-              // RIGHT: file picker when no file, view when file exists
-              right={
-                hasFile ? (
-                  <TextInput.Icon
-                    // show "View" text
-                    icon={() => <Text style={{ color: "#1e88e5" }}>View</Text>}
-                    onPress={() => viewFile(value)}
-                    forceTextInputFocus={false}
-                  />
-                ) : (
-                  <TextInput.Icon
-                    icon="file"
-                    onPress={() => pickFile(onChange)}
-                    forceTextInputFocus={false}
-                  />
-                )
-              }
-            />
+            <View
+              style={{
+                borderWidth: 1.6,
+                borderColor: showError ? colors.error : colors.neutral,
+                backgroundColor: colors.light,
+                paddingVertical: 16,
+                paddingHorizontal: 14,
+                borderRadius: 10,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => !hasFile && pickFile(onChange)}
+                activeOpacity={0.7}
+                style={{ flex: 1 }}
+              >
+                <Text
+                  style={{
+                    color: colors.dark,
+                    fontSize: 15,
+                    fontWeight: hasFile ? "500" : "400",
+                  }}
+                  numberOfLines={1}
+                >
+                  {hasFile
+                    ? value?.name.split(" ")[0]
+                    : `${label}${optional ? " (Optional)" : ""}`}
+                </Text>
+              </TouchableOpacity>
 
+              <View style={{ flexDirection: "row", gap: 14 }}>
+                {hasFile ? (
+                  <>
+                    <TouchableOpacity onPress={() => viewFile(value)}>
+                      <Eye size={22} color={colors.primary} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => onChange(null)}>
+                      <X size={22} color={colors.error} />
+                    </TouchableOpacity>
+                  </>
+                ) : (
+                  <TouchableOpacity onPress={() => pickFile(onChange)}>
+                    <Upload size={22} color={colors.primary} />
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
+
+            {/* ERROR TEXT (only if required) */}
             {showError && (
               <HelperText type="error" visible>
                 {(fieldError || error)?.message}

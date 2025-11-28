@@ -11,6 +11,7 @@
 //   error: "#f44336",
 // };
 
+<<<<<<< HEAD
 // export default function FormInput({
 //   control,
 //   name,
@@ -26,6 +27,25 @@
 //   ...props
 // }: FormInputProps) {
 //   const [showPassword, setShowPassword] = useState(false);
+=======
+export default function FormInput({
+  control,
+  name,
+  label,
+  secure = false,
+  optional = false,
+  icon = null,
+  iconColor = "secondary",
+  iconSize = 22,          // 🔥 NEW icon size prop
+  onPressIcon,
+  defaultValue = "",
+  error,
+  ...props
+}: FormInputProps) {
+  console.log(error, "error");
+
+  const [showPassword, setShowPassword] = useState(false);
+>>>>>>> 784257a1b28338a7d8c9060060ee459be1cb2028
 
 //   const keyboardTypeMap = {
 //     text: "default",
