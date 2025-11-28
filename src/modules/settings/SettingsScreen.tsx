@@ -38,7 +38,6 @@ export default function SettingsScreen() {
         contentContainerStyle={{ paddingBottom: 20 }}
         className="px-4"
       >
-        {/* Account Info */}
         <View
           className="p-4 mb-4 rounded-xl"
           style={{ backgroundColor: colors.blackHover }}
