@@ -1,17 +1,9 @@
 import { deleteItem, getItem, setItem } from "./universalSecureToken";
 
-export const saveAuth = async (token: string, userId: number) => {
-  await setItem("auth_token", token);
-  await setItem("auth_userId", String(userId));
-};
+// Generic helpers
+export const save = (key: string, value: any) =>
+  value !== null ? setItem(key, String(value)) : deleteItem(key);
 
-export const getAuth = async () => {
-  const token = await getItem("auth_token");
-  const userId = await getItem("auth_userId");
-  return { token, userId: userId ? Number(userId) : null };
-};
+export const load = async (key: string) => await getItem(key);
 
-export const clearAuth = async () => {
-  await deleteItem("auth_token");
-  await deleteItem("auth_userId");
-};
+export const clear = async (key: string) => await deleteItem(key);

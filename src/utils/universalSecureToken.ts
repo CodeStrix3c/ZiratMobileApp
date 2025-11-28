@@ -3,14 +3,16 @@ import * as SecureStore from "expo-secure-store";
 const isWeb =
   typeof window !== "undefined" && typeof window.localStorage !== "undefined";
 
+// SAVE ITEM
 export const setItem = async (key: string, value: string) => {
   if (isWeb) {
     window.localStorage.setItem(key, value);
-    return;
+  } else {
+    await SecureStore.setItemAsync(key, value);
   }
-  await SecureStore.setItemAsync(key, value);
 };
 
+// GET ITEM
 export const getItem = async (key: string) => {
   if (isWeb) {
     return window.localStorage.getItem(key);
@@ -18,10 +20,11 @@ export const getItem = async (key: string) => {
   return await SecureStore.getItemAsync(key);
 };
 
+// DELETE ITEM
 export const deleteItem = async (key: string) => {
   if (isWeb) {
     window.localStorage.removeItem(key);
-    return;
+  } else {
+    await SecureStore.deleteItemAsync(key);
   }
-  await SecureStore.deleteItemAsync(key);
 };

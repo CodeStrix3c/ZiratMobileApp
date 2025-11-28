@@ -1,6 +1,6 @@
 import { colors } from "@/src/constants/colors";
 import { Tabs } from "expo-router";
-import { Home, Trees, TrendingUpIcon, User } from "lucide-react-native";
+import { Home, ShoppingBag, Trees, TrendingUpIcon, User } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
@@ -18,7 +18,7 @@ export default function TabLayout() {
           height: insets.bottom,
           backgroundColor: colors.white,
           borderTopWidth: 0,
-          elevation: 5,
+          elevation: 0.5,
           shadowColor: colors.blackHover,
           shadowOpacity: 0.1,
           shadowOffset: { width: 0, height: -2 },
@@ -33,22 +33,35 @@ export default function TabLayout() {
           tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
         }}
       />
+
       <Tabs.Screen
-        name="Crops"
+        name="orchards"
         options={{
           title: "Crops",
           tabBarIcon: ({ color, size }) => <Trees color={color} size={size} />,
         }}
       />
+
+      <Tabs.Screen
+        name="Product"
+        options={{
+          title: "Products",
+          tabBarIcon: ({ color, size }) => (
+            <ShoppingBag color={color} size={size} />
+          ),
+        }}
+      />
+
       <Tabs.Screen
         name="Market"
         options={{
           title: "Market",
-           tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color, size }) => (
             <TrendingUpIcon color={color} size={size} />
           ),
         }}
       />
+
       <Tabs.Screen
         name="Profile"
         options={{

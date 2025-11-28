@@ -1,27 +1,23 @@
-import React, { useEffect } from "react";
+import { router } from "expo-router";
+import { ReactNode, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-// import { router } from "expo-router"; // comment out if not redirecting
 
-export default function RouteGuard({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { user, initialized } = useAuth();
+interface RouteGuardProps {
+  children: ReactNode;
+}
 
-  const isClient = typeof window !== "undefined";
+export default function RouteGuard({ children }: RouteGuardProps) {
+  const { initialized, userId } = useAuth();
 
   useEffect(() => {
-    if (!isClient) return; // skip SSR
+    if (!initialized) return;
 
-    // ❌ Skip auth page for now
-    // if (initialized && user === null) {
-    //   router.replace("/auth"); // temporarily comment redirect
-    // }
-  }, [user, initialized, isClient]);
+    if (!userId) {
+      router.replace("/auth");
+    }
+  }, [initialized, userId]);
 
-  // render nothing until auth is initialized
-  if (!isClient || !initialized) return null;
+  if (!initialized) return null;
 
   return <>{children}</>;
 }

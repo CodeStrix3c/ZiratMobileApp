@@ -1,11 +1,13 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useLoginMutation } from "@/src/hooks/useUserProfileMutation";
-import React, { useState } from "react";
+import { useLoginMutation } from "@/src/hooks/userQueryHooks";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+import { router } from "expo-router";
+import { useState } from "react";
 import { View } from "react-native";
 import { Button, Divider, Snackbar, Text } from "react-native-paper";
 import { useZodForm } from "../../hooks/useZodForm";
-import { LoginSchema } from "../../schemas/auth.schema";
+import { LoginSchema } from "../../schemas/shared/login.schema";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
@@ -13,32 +15,39 @@ export default function LoginForm() {
 
   const [showSnack, setShowSnack] = useState(false);
   const toggleSnack = () => setShowSnack((p) => !p);
+  const { setUserToken, setUserId } = useAuth();
 
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
-  const { login } = useAuth();
 
   const onSubmit = async (data: any) => {
-    // try {
-    //   const response = await loginMutate({
-    //     email: data.email,
-    //     password: data.password,
-    //   });
+    console.log(data,"data...");
+    
+    try {
+      const response = await loginMutate({
+        mobileNumber: data.mobileNumber,
+        password: data.password,
+      });
+      console.log(response,"login response");
+      
+      if (response.success) {
+        await setUserToken(response.token);
+        await setUserId(response.user);
+        router.replace("/");
+        showSuccessToast("logged in");
+      }
 
-    //   console.log("Login success:", response);
+      setShowSnack(true);
+    } catch (error: any) {
+      showErrorToast("Something went wrong try again later");
 
-    //   await saveAuth(response.token, response.user);
-
-    //   setShowSnack(true);
-    // } catch (error: any) {
-    //   console.log("Login failed:", error);
-    //   toggleSnack();
-    // }
-    await login("fakeToken", 100);
+      toggleSnack();
+    }
+    router.push("/");
   };
 
   return (
     <>
-      <View style={{ padding: 20 }}>
+      <View style={{ padding: 20, }}>
         <Text variant="headlineSmall">Login</Text>
         <Text variant="labelLarge">Enter your credentials below</Text>
 
@@ -46,16 +55,17 @@ export default function LoginForm() {
 
         <FormInput
           control={control}
-          name="email"
-          label="Email"
-          error={errors.email}
+          name="mobileNumber"
+          label="Phone Number"
+          type="number"
+          error={errors.mobileNumber}
         />
 
         <FormInput
           control={control}
           name="password"
           label="Password"
-          secure
+          type="password"
           error={errors.password}
         />
 
