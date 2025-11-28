@@ -1,21 +1,18 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import { BusinessSectionProps } from "@/src/types/BusinessSection.types";
-import React from "react";
 import { View } from "react-native";
 
 export default function BusinessSection({
   control,
   errors,
 }: BusinessSectionProps) {
-  console.log(errors, "in business");
-
   return (
     <View style={{ padding: 20 }}>
       <FormInput
         control={control}
-        name="businessName"
+        name="shopName"
         label="Shop / Business Name"
-        error={errors?.businessName?.message}
+        error={errors?.shopName?.message}
       />
 
       <FormInput
@@ -27,59 +24,64 @@ export default function BusinessSection({
 
       <FormInput
         control={control}
-        name="primaryContact"
+        name="contactNumberPrimary"
         label="Primary Contact Number"
-        type="number"
-        error={errors?.primaryContact?.message}
+        type="phone"
+        error={errors?.contactNumberPrimary?.message}
       />
 
       <FormInput
         control={control}
-        name="alternateContact"
+        name="contactNumberAlternate"
         label="Alternate Contact (optional)"
-        type="number"
-        error={errors?.alternateContact}
+        type="phone"
+        optional
+        error={errors?.contactNumberAlternate?.message}
       />
 
       <FormInput
         control={control}
         name="email"
-        label="Email (optional)"
+        label="Email"
         type="email"
-        error={errors?.email}
+        optional
+        error={errors?.email?.message}
       />
 
-      {/* ADDRESS FIELDS */}
       <FormInput
         control={control}
-        name="businessAddressVillage"
+        name="village"
         label="Village"
-        error={errors?.businessAddressVillage?.message}
+        error={errors?.village?.message}
       />
+
       <FormInput
         control={control}
-        name="businessAddressTehsil"
+        name="tehsil"
         label="Tehsil"
-        error={errors?.businessAddressTehsil?.message}
+        error={errors?.tehsil?.message}
       />
+
       <FormInput
         control={control}
-        name="businessAddressDistrict"
+        name="district"
         label="District"
-        error={errors?.businessAddressDistrict?.message}
+        error={errors?.district?.message}
       />
+
       <FormInput
         control={control}
-        name="businessAddressState"
+        name="state"
         label="State"
-        error={errors?.businessAddressState?.message}
+        error={errors?.state?.message}
       />
+
       <FormInput
         control={control}
-        name="businessAddressPincode"
-        type="number"
+        name="pincode"
         label="Pincode"
-        error={errors?.businessAddressPincode?.message}
+        type="phone"
+        error={errors?.pincode?.message}
       />
     </View>
   );

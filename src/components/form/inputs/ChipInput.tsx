@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import { FormFieldProps } from "@/src/types/formFieldProps";
+import { useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { Text, View } from "react-native";
 import { Chip, TextInput } from "react-native-paper";
 
-export default function ChipInput({ control, name, label, error }) {
+export default function ChipInput({
+  control,
+  name,
+  label,
+  error,
+  placeholder = "Add Area",
+}: FormFieldProps) {
   const [value, setValue] = useState("");
 
   const { fields, append, remove } = useFieldArray({
@@ -23,10 +30,9 @@ export default function ChipInput({ control, name, label, error }) {
         {label}
       </Text>
 
-      {/* INPUT WITH ADD ICON */}
       <TextInput
         mode="outlined"
-        placeholder="Add area..."
+        placeholder={placeholder}
         value={value}
         onChangeText={setValue}
         right={
@@ -38,7 +44,6 @@ export default function ChipInput({ control, name, label, error }) {
         }
       />
 
-      {/* Chips */}
       <View
         style={{
           flexDirection: "row",
@@ -60,7 +65,6 @@ export default function ChipInput({ control, name, label, error }) {
         ))}
       </View>
 
-      {/* Validation error */}
       {error && (
         <Text style={{ color: "red", marginBottom: 16 }}>{error.message}</Text>
       )}

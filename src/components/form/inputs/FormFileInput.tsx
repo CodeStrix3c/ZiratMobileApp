@@ -1,8 +1,8 @@
 import { colors } from "@/src/constants/colors";
+import { FormFieldProps } from "@/src/types/formFieldProps";
 import * as DocumentPicker from "expo-document-picker";
 import * as Sharing from "expo-sharing";
 import { Eye, Upload, X } from "lucide-react-native";
-import React from "react";
 import { Controller } from "react-hook-form";
 import { Text, TouchableOpacity, View } from "react-native";
 import { HelperText } from "react-native-paper";
@@ -13,7 +13,7 @@ export default function FormFileInput({
   label = "Upload License Copy",
   optional = false, // if true → no error shown
   error,
-}) {
+}: FormFieldProps) {
   const pickFile = async (onChange) => {
     try {
       const result = await DocumentPicker.getDocumentAsync({

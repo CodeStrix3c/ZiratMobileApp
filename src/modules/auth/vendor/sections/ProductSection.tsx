@@ -1,40 +1,68 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
-import React from "react";
-import { useFieldArray } from "react-hook-form";
-import { Text, TouchableOpacity, View } from "react-native";
+import {
+  useVendorBrandsQuery,
+  useVendorInputsQuery,
+} from "@/src/hooks/vendorQueryHooks";
+import { useFieldArray, useWatch } from "react-hook-form";
+import { TouchableOpacity, View } from "react-native";
+import { Text } from "react-native-paper";
 
-export default function ProductSection({ control, errors }) {
-  const inputOptions = [
-    "Seeds",
-    "Fertilizers",
-    "Pesticides",
-    "Equipment",
-    "Bio-products",
-  ];
+export default function ProductSection({ control, errors, vendorId }) {
+  // Fetch dynamic vendor inputs
+  const { data: inputsData, isLoading: loadingInputs } = useVendorInputsQuery();
 
+  // Fetch vendor-related brands
+  const { data: brandsData, isLoading: loadingBrands } =
+    useVendorBrandsQuery(vendorId);
+
+  // Watch major brands field
+  const majorBrands = useWatch({
+    control,
+    name: "majorBrands",
+  });
+
+  // Field array for optional inputs list
   const { fields, append, remove } = useFieldArray({
     control,
     name: "otherInputs",
   });
 
+  if (loadingInputs || loadingBrands) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <View style={{ padding: 20 }}>
+      {/* Inputs Sold */}
       <MultiSelectInput
         name="inputsSold"
         control={control}
         label="Type of Inputs Sold"
-        options={inputOptions.map((i) => ({ value: i, label: i }))}
+        options={inputsData?.map((i) => ({
+          value: i.name,
+          label: i.name,
+        }))}
         error={errors?.inputsSold?.message}
       />
 
-      <FormInput
-        control={control}
+      {/* Major Brands (Multi Select) */}
+      <MultiSelectInput
         name="majorBrands"
-        label="Major Brands Stocked (e.g., Bayer, UPL)"
-        error={errors?.majorBrands?.message}
+        control={control}
+        label="Major Brands Stocked"
+        options={brandsData?.map((b) => ({
+          value: b.name,
+          label: b.name,
+        }))}
+        error={
+          majorBrands?.length === 0
+            ? { message: "At least one brand is required." }
+            : errors.majorBrands?.message
+        }
       />
 
+      {/* Storage Capacity */}
       <FormInput
         control={control}
         optional
@@ -43,6 +71,7 @@ export default function ProductSection({ control, errors }) {
         error={errors?.storageCapacity?.message}
       />
 
+      {/* Other Inputs Section */}
       <Text
         style={{
           fontWeight: "700",
@@ -78,7 +107,7 @@ export default function ProductSection({ control, errors }) {
               control={control}
               name={`otherInputs[${index}].stock`}
               label="Stock"
-              type="number"
+              type="phone"
               error={errors.otherInputs?.[index]?.stock?.message}
             />
           </View>

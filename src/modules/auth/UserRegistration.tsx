@@ -7,36 +7,20 @@ import {
 } from "@/src/hooks/userQueryHooks";
 
 import { useAuth } from "@/src/contexts/AuthContext";
-import { otpSchema } from "@/src/schemas/shared/otp.schema";
+import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast } from "@/src/utils/toast";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { Alert, Button, View } from "react-native";
+import { otpSchema } from "../../schemas/shared/otp.schema";
 import { profileSchema } from "../../schemas/user/profile.schema";
 
 export default function UserRegistration() {
   const [step, setStep] = useState(0);
   const [profileData, setProfileData] = useState<any>(null);
-
-  const profileMethods = useForm({
-    resolver: zodResolver(profileSchema),
-    mode: "onChange",
-  });
-
-  const otpMethods = useForm({
-    resolver: zodResolver(otpSchema),
-    mode: "onChange",
-  });
-
-  const methods = step === 0 ? profileMethods : otpMethods;
-
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = methods;
+  const schemas=[profileSchema,otpSchema]
+  const methods = useZodForm(schemas[step], { mode:"onChange" });
+  const { control, handleSubmit, formState: { errors } } = methods;
 
   const { mutateAsync: signupMutate, isPending: isSignupPending } =
     useProfileMutation();
