@@ -37,6 +37,7 @@ export default function FormInput({
   iconSize = 22,
   onPressIcon,
   defaultValue = "",
+  error,
   ...props
 }: FormInputProps) {
   console.log(error, "error");

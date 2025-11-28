@@ -1,28 +1,9 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
-import { orchardSchema, OrchardSchemaType } from "@/src/schemas/orchard schemas/stepASchemas";
-import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
 import { ScrollView, Text, View } from "react-native";
 
 export default function StepA_BasicInfo() {
-  const methods = useForm<OrchardSchemaType>({
-    resolver: zodResolver(orchardSchema),
-    defaultValues: {
-      orchardName: "",
-      orchardSize: "",
-      establishmentYear: "",
-      plantationPattern: "",
-      ownershipType: "",
-      district: "",
-      tehsil: "",
-      zone: "",
-      pincode: "",
-      latitude: "",
-      longitude: "",
-    },
-    mode: "onTouched",
-  });
+  
 
   const fields = [
     { name: "orchardName", label: "Orchard Name", icon: "account" },
@@ -38,44 +19,31 @@ export default function StepA_BasicInfo() {
     { name: "longitude", label: "Longitude", icon: "crosshairs" },
   ];
 
-  const onSubmit = (data: OrchardSchemaType) => {
-    console.log("Validated data:", data);
-    // next step ya API call yahan karo
-  };
-
   return (
-    <FormProvider {...methods}>
-      <ScrollView className="flex-1 w-full">
+    <ScrollView className="flex-1 w-full">
 
-        {/* Heading */}
-        <Text className="text-2xl font-bold mb-4 text-center text-primary">
-          Orchard Registration
+      <Text className="text-2xl font-bold mb-4 text-center text-primary">
+        Orchard Registration
+      </Text>
+
+      <View className="bg-light rounded-2xl px-4 shadow-md shadow-neutral w-full">
+        <Text className="text-lg font-semibold mb-3 text-primary">
+          Basic / Mandatory Information
         </Text>
 
-        {/* Form Card */}
-        <View className="bg-light rounded-2xl px-4 shadow-md shadow-neutral w-full ">
-
-          <Text className="text-lg font-semibold mb-3 text-primary">
-            Basic / Mandatory Information
-          </Text>
-
-          {fields.map((field) => (
-            <FormInput
+        {fields.map((field) => (
+          <FormInput
+            key={field.name}
+            control={control}
+            name={field.name}
+            label={field.label}
+            icon={field.icon}
+            iconColor="secondary"
             iconSize={20}
-              key={field.name}
-              control={methods.control}
-              name={field.name }
-              label={field.label}
-              icon={field.icon}
-              iconColor="secondary"
-              className="w-full"
-              // error={methods.formState.errors[field.name]}
-              
-            />
-          ))}
+          />
+        ))}
 
-        </View>
-      </ScrollView>
-    </FormProvider>
+      </View>
+    </ScrollView>
   );
 }
