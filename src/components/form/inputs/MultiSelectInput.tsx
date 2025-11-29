@@ -1,34 +1,17 @@
-// src/components/form/inputs/MultiSelectInput.tsx
-import React, { useState } from "react";
+import { FormFieldProps } from "@/src/types/formFieldProps";
 import { Controller } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { MultiSelectDropdown } from "react-native-paper-dropdown";
 
-interface Option {
-  label: string;
-  value: string;
-}
-
-interface Props {
-  control: any;
-  name: string;
-  label: string;
-  options: Option[];
-  error?: any;
-  optional?: boolean;
-}
-
 export default function MultiSelectInput({
   control,
   name,
   label,
-  options,
+  options = [], // Ensure default empty array
   error,
   optional = false,
-}: Props) {
-  const [showDropdown, setShowDropdown] = useState(false);
-
+}: FormFieldProps) {
   return (
     <Controller
       control={control}
@@ -38,11 +21,12 @@ export default function MultiSelectInput({
           <MultiSelectDropdown
             label={optional ? `${label} (Optional)` : label}
             placeholder={`Select ${label}`}
-            value={value || []}
-            onSelect={onChange}
-            options={options}
+            value={Array.isArray(value) ? value : []} // Always an array
+            onSelect={(selected) => onChange(selected ?? [])} // Safe fallback
+            options={Array.isArray(options) ? options : []} // Always an array
           />
-          {error && <Text style={styles.error}>{error.message}</Text>}
+
+          {error && <Text style={styles.error}>{error.message || error}</Text>}
         </View>
       )}
     />

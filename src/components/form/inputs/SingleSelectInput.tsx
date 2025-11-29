@@ -1,22 +1,8 @@
-import React from "react";
+import { FormFieldProps } from "@/src/types/formFieldProps";
 import { Controller } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
+import { HelperText } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
-
-interface Option {
-  label: string;
-  value: string;
-}
-
-interface Props {
-  control: any;
-  name: string;
-  label: string;
-  options: Option[];
-  error?: any;
-  optional?: boolean;
-}
 
 export default function SingleSelectInput({
   control,
@@ -25,7 +11,7 @@ export default function SingleSelectInput({
   options,
   error,
   optional = false,
-}: Props) {
+}: FormFieldProps) {
   return (
     <Controller
       control={control}
@@ -39,7 +25,9 @@ export default function SingleSelectInput({
             value={value}
             onSelect={onChange}
           />
-          {error && <Text style={styles.error}>{error.message}</Text>}
+          <HelperText type="error" visible>
+            {error?.message}
+          </HelperText>
         </View>
       )}
     />

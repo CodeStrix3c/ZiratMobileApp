@@ -1,5 +1,4 @@
 // src/components/form/sections/OTPSection.tsx
-import React from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import FormInput from "../inputs/FormInput";
@@ -24,8 +23,8 @@ export default function OTPSection({ control, errors, onResend }: Props) {
         control={control}
         name="otp"
         label="Enter OTP"
-        error={errors?.otp}
-        keyboardType="number-pad"
+        error={errors?.otp?.message}
+        type="phone"
       />
 
       {onResend && (

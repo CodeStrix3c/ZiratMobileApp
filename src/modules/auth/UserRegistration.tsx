@@ -1,77 +1,86 @@
+import OTPSection from "@/src/components/form/sections/OTPSection";
 import ProfileSection from "@/src/components/form/sections/ProfileSection";
 import {
+  useLoginMutation,
   useOtpVerifyMutation,
   useProfileMutation,
-} from "@/src/hooks/useUserProfileMutation";
-import React, { useState } from "react";
+} from "@/src/hooks/userQueryHooks";
+
+import { useAuth } from "@/src/contexts/AuthContext";
+import { useZodForm } from "@/src/hooks/useZodForm";
+import { showErrorToast } from "@/src/utils/toast";
+import { router } from "expo-router";
+import { useState } from "react";
 import { Alert, Button, View } from "react-native";
-import OTPSection from "../../components/form/sections/OTPSection";
-import { useZodForm } from "../../hooks/useZodForm";
-import { otpSchema } from "../../schemas/otpSchema";
-import { profileSchema } from "../../schemas/profileSchema";
+import { otpSchema } from "../../schemas/shared/otp.schema";
+import { profileSchema } from "../../schemas/user/profile.schema";
 
 export default function UserRegistration() {
   const [step, setStep] = useState(0);
-
-  const schemas = [profileSchema, otpSchema];
-  const { control, handleSubmit, formState, getValues } = useZodForm(
-    schemas[step]
-  );
-  const { errors } = formState;
-
-  const nextStep = () => setStep((s) => Math.min(s + 1, schemas.length - 1));
-  const prevStep = () => setStep((s) => Math.max(s - 1, 0));
+  const [profileData, setProfileData] = useState<any>(null);
+  const schemas=[profileSchema,otpSchema]
+  const methods = useZodForm(schemas[step], { mode:"onChange" });
+  const { control, handleSubmit, formState: { errors } } = methods;
 
   const { mutateAsync: signupMutate, isPending: isSignupPending } =
     useProfileMutation();
-
   const { mutateAsync: verifyOtpMutate, isPending: isOtpPending } =
     useOtpVerifyMutation();
+  const { mutateAsync: loginMutate } = useLoginMutation();
+  const { setUserToken, setUserId } = useAuth();
 
-  // ---------------------
-  // 🔥 UPDATED SUBMIT LOGIC
-  // ---------------------
+  const nextStep = () => setStep((s) => s + 1);
+  const prevStep = () => setStep((s) => s - 1);
+
   const onSubmit = async (data: any) => {
-    // STEP 0 → PROFILE SUBMISSION
     if (step === 0) {
-      try {
-        await signupMutate({
-          fullName: data.fullName,
-          phone: data.phone,
-          email: data.email,
-          password: data.password,
-          confirmPassword: data.confirmPassword,
-        });
-
-        Alert.alert("Success", "OTP sent to your phone.");
-        nextStep();
-      } catch (error: any) {
-        Alert.alert(
-          "Signup Failed",
-          error?.response?.data?.message || "Unknown error"
-        );
-      }
+      setProfileData(data);
+      nextStep();
       return;
     }
 
-    // STEP 1 → OTP VERIFICATION
     if (step === 1) {
       try {
-        await verifyOtpMutate({
-          phone: getValues("phone"), // from step 0
+        const signupRes = await signupMutate(profileData);
+
+        if (!signupRes.success) {
+          showErrorToast("Signup failed");
+          return;
+        }
+
+        const otpRes = await verifyOtpMutate({
+          phoneNumber: profileData.phone,
           otp: data.otp,
         });
 
-        Alert.alert("Success", "Registration completed.");
+        if (otpRes.message !== "OTP verified successfully.") {
+          Alert.alert("Error", "Invalid OTP");
+          return;
+        }
+
+        const loginRes = await loginMutate({
+          email: profileData.email,
+          password: profileData.password,
+        });
+
+        await setUserToken(loginRes.token);
+        await setUserId(loginRes.user);
+
+        router.replace("/");
+
+        Alert.alert("Success", "Registration + Login successful.");
       } catch (error: any) {
-        Alert.alert(
-          "OTP Failed",
-          error?.response?.data?.message || "Invalid OTP"
-        );
+        const backendError =
+          error?.response?.data?.[0]?.description ||
+          error?.response?.data?.message ||
+          "Something went wrong";
+
+        showErrorToast(backendError);
       }
-      return;
     }
   };
+
+  const isLoading = isSignupPending || isOtpPending;
 
   return (
     <View style={{ flex: 1 }}>
@@ -85,10 +94,14 @@ export default function UserRegistration() {
           margin: 20,
         }}
       >
-        {step > 0 && <Button title="Back" onPress={prevStep} />}
+        {step > 0 && (
+          <Button title="Back" onPress={prevStep} disabled={isLoading} />
+        )}
+
         <Button
           title={step === 1 ? "Submit" : "Next"}
           onPress={handleSubmit(onSubmit)}
+          disabled={isLoading}
         />
       </View>
     </View>

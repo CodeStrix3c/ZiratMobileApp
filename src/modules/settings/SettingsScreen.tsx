@@ -1,35 +1,26 @@
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { showSuccessToast } from "@/src/utils/toast";
+import { router } from "expo-router";
 import { Info, User } from "lucide-react-native";
 import React from "react";
-import {
-  Alert,
-  ScrollView,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScrollView, Switch, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SettingsScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = React.useState(false);
 
-  const { logout, user } = useAuth();
-  console.log(user, "user...");
+  const { logoutUser } = useAuth();
 
-  const handleLogout = () => {
-    Alert.alert("Logout", "Are you sure you want to logout?", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Logout",
-        style: "destructive",
-        onPress: async () => {
-          await logout();
-        },
-      },
-    ]);
+  const handleLogout = async () => {
+    await logoutUser();
+    router.replace("/auth");
+    showSuccessToast("logged out");
+  };
+
+  const goToProfileCompletion = () => {
+    router.push("/userProfileCompletion");
   };
 
   return (
@@ -38,7 +29,6 @@ export default function SettingsScreen() {
         contentContainerStyle={{ paddingBottom: 20 }}
         className="px-4"
       >
-        {/* Account Info */}
         <View
           className="p-4 mb-4 rounded-xl"
           style={{ backgroundColor: colors.blackHover }}
@@ -52,13 +42,28 @@ export default function SettingsScreen() {
               Account Info
             </Text>
           </View>
-          <Text style={{ color: colors.gray }}>
-            Username: {user?.name || "N/A"}
-          </Text>
-          <Text style={{ color: colors.gray }}>
-            Email:@example.com` : "N/A"
-          </Text>
+          <Text style={{ color: colors.gray }}>Username: {"N/A"}</Text>
+          <Text style={{ color: colors.gray }}>Email: {"N/A"}</Text>
         </View>
+
+        {/* 🔵 COMPLETE PROFILE BUTTON */}
+        <TouchableOpacity
+          onPress={goToProfileCompletion}
+          className="p-4 mb-4 rounded-xl"
+          style={{
+            backgroundColor: colors.secondaryHover,
+          }}
+        >
+          <Text
+            className="text-base font-semibold"
+            style={{ color: colors.black }}
+          >
+            Complete Your Profile →
+          </Text>
+          <Text style={{ color: colors.gray, marginTop: 4 }}>
+            Fill missing details like address, education, and profession.
+          </Text>
+        </TouchableOpacity>
 
         {/* Preferences */}
         <View
