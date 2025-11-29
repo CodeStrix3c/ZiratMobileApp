@@ -71,6 +71,7 @@ export default function DrawerLayout() {
           drawerActiveTintColor: "#22c55e",
         }}
       >
+        {/* HOME (unchanged) */}
         <Drawer.Screen
           name="(tabs)"
           options={{
