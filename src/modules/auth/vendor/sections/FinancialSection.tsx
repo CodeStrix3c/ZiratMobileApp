@@ -1,10 +1,14 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import React, { useEffect } from "react";
+import { FormSectionProps } from "@/src/types/formSectionProps";
+import { useEffect } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { Text, TouchableOpacity, View } from "react-native";
 
-export default function FinancialPaymentSection({ control, errors }) {
+export default function FinancialPaymentSection({
+  control,
+  errors,
+}: FormSectionProps) {
   const sellingViaZiraat = useWatch({
     control,
     name: "sellingViaZiraat",
@@ -13,7 +17,6 @@ export default function FinancialPaymentSection({ control, errors }) {
 
   const { setValue } = useFormContext();
 
-  // Clear bank details when unchecked
   useEffect(() => {
     if (!sellingViaZiraat) {
       setValue("bankDetails", undefined, { shouldValidate: true });
@@ -22,7 +25,6 @@ export default function FinancialPaymentSection({ control, errors }) {
 
   return (
     <View style={{ padding: 20 }}>
-      {/* PAYMENT OPTIONS */}
       <View
         style={{
           borderWidth: 1,
@@ -56,7 +58,6 @@ export default function FinancialPaymentSection({ control, errors }) {
         />
       </View>
 
-      {/* ZIRAAT MARKETPLACE CHECKBOX */}
       <View
         style={{
           borderWidth: 1,
@@ -100,7 +101,6 @@ export default function FinancialPaymentSection({ control, errors }) {
           payouts.
         </Text>
 
-        {/* BANK DETAILS BLOCK */}
         {sellingViaZiraat && (
           <View style={{ marginTop: 10 }}>
             <FormInput

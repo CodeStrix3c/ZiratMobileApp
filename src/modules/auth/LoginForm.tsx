@@ -2,7 +2,7 @@ import FormInput from "@/src/components/form/inputs/FormInput";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { View } from "react-native";
 import { Button, Divider, Snackbar, Text } from "react-native-paper";
 import { useZodForm } from "../../hooks/useZodForm";
@@ -19,11 +19,15 @@ export default function LoginForm() {
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
 
   const onSubmit = async (data: any) => {
+    console.log(data,"data...");
+    
     // try {
     //   const response = await loginMutate({
-    //     phone: data.phone,
+    //     mobileNumber: data.mobileNumber,
     //     password: data.password,
     //   });
+    //   console.log(response,"login response");
+      
     //   if (response.success) {
     //     await setUserToken(response.token);
     //     await setUserId(response.user);
@@ -50,10 +54,10 @@ export default function LoginForm() {
 
         <FormInput
           control={control}
-          name="phone"
+          name="mobileNumber"
           label="Phone Number"
           type="number"
-          error={errors.phone}
+          error={errors.mobileNumber}
         />
 
         <FormInput

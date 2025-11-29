@@ -1,8 +1,7 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
-import React from "react";
 import { ScrollView, Text, View } from "react-native";
 
-export default function StepA_BasicInfo() {
+export default function StepA_BasicInfo({control, errors}) {
   
 
   const fields = [
@@ -40,6 +39,7 @@ export default function StepA_BasicInfo() {
             icon={field.icon}
             iconColor="secondary"
             iconSize={20}
+            errors={errors}
           />
         ))}
 

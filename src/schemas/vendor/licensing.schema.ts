@@ -2,10 +2,10 @@ import { z } from "zod";
 
 export const licensingComplianceSchema = z.object({
   dealerLicenseNumber: z.string().min(1, "Required Field"),
-  licenseValidityStart: z.string().min(1, "Required Field"),
-  licenseValidityEnd: z.string().min(1, "Required Field"),
+  licenseStartDate: z.string().min(1, "Required Field"),
+  licenseExpiryDate: z.string().min(1, "Required Field"),
 
-  licenseCopy: z
+  licenseCopyUrl: z
     .object({
       uri: z.string(),
       name: z.string(),
@@ -27,7 +27,7 @@ export const licensingComplianceSchema = z.object({
     .optional()
     .or(z.literal("")),
 
-  pan: z
+  panNumber: z
     .string()
     .regex(
       /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,

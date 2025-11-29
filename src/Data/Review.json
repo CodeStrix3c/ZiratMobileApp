@@ -1,0 +1,41 @@
+{
+  "summary": {
+    "averageRating": 4.5,
+    "totalReviews": 120
+  },
+  "filters": ["Latest", "Most Helpful", "Rating"],
+  "reviews": [
+    {
+      "id": "1",
+      "user": "John Doe",
+      "rating": 4,
+      "comment": "Great product! Very useful and high quality.",
+      "date": "Jan 15, 2025",
+      "helpful": 12
+    },
+    {
+      "id": "2",
+      "user": "Jane Smith",
+      "rating": 5,
+      "comment": "Exceeded expectations. Highly recommended!",
+      "date": "Jan 20, 2025",
+      "helpful": 20
+    },
+     {
+      "id": "3",
+      "user": "Michael Brown",
+      "rating": 3,
+      "comment": "Good but could be improved in durability.",
+      "date": "Feb 3, 2025",
+      "helpful": 5
+    },
+    {
+      "id": "4",
+      "user": "Emily Johnson",
+      "rating": 5,
+      "comment": "Fantastic! The quality is top-notch and delivery was fast.",
+      "date": "Feb 10, 2025",
+      "helpful": 18
+    }
+  ]
+}

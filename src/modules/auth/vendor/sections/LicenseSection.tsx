@@ -1,10 +1,10 @@
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
 import FormFileInput from "@/src/components/form/inputs/FormFileInput";
 import FormInput from "@/src/components/form/inputs/FormInput";
-import React from "react";
+import { FormSectionProps } from "@/src/types/formSectionProps";
 import { View } from "react-native";
 
-export default function LicenseSection({ control, errors }) {
+export default function LicenseSection({ control, errors }: FormSectionProps) {
   console.log(errors, "errors,");
 
   return (
@@ -18,16 +18,16 @@ export default function LicenseSection({ control, errors }) {
 
       <FormDateInput
         control={control}
-        name="licenseValidityStart"
+        name="licenseStartDate"
         label="License Start Date"
-        error={errors?.licenseValidityStart?.message}
+        error={errors?.licenseStartDate?.message}
       />
 
       <FormDateInput
         control={control}
-        name="licenseValidityEnd"
+        name="licenseExpiryDate"
         label="License Expiry Date"
-        error={errors?.licenseValidityEnd?.message}
+        error={errors?.licenseExpiryDate?.message}
       />
 
       <FormInput
@@ -40,18 +40,18 @@ export default function LicenseSection({ control, errors }) {
 
       <FormInput
         control={control}
-        name="pan"
+        name="panNumber"
         label="PAN"
         optional
-        error={errors?.pan?.message}
+        error={errors?.panNumber?.message}
       />
 
       {/* License File Upload */}
       <FormFileInput
         control={control}
-        name="licenseCopy"
+        name="licenseCopyUrl"
         label="Upload License Copy"
-        error={errors?.licenseCopy?.message}
+        error={errors?.licenseCopyUrl?.message}
       />
     </View>
   );

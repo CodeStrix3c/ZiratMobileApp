@@ -1,14 +1,8 @@
-import { useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { Button, ScrollView, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, Button, ScrollView, Text, View } from "react-native";
 
-import FinancialSection from "./sections/FinancialSection";
-import LicenseSection from "./sections/LicenseSection";
-import OperationalSection from "./sections/OperationalSection";
-import ProductSection from "./sections/ProductSection";
-import SupportSection from "./sections/SupportSection";
-
-// Queries & Mutations
+import { useAuth } from "@/src/contexts/AuthContext";
+import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorFinancialMutation,
   useVendorFinancialQuery,
@@ -18,23 +12,27 @@ import {
   useVendorOperationsQuery,
   useVendorProductsMutation,
   useVendorProductsQuery,
+  useVendorProfileQuery,
   useVendorSupportMutation,
   useVendorSupportQuery,
 } from "@/src/hooks/vendorQueryHooks";
-
-// Schemas
-import { useAuth } from "@/src/contexts/AuthContext";
 import { financialPaymentSchema } from "@/src/schemas/vendor/finance.schema";
 import { licensingComplianceSchema } from "@/src/schemas/vendor/licensing.schema";
 import { operationalDetailsSchema } from "@/src/schemas/vendor/operations.schema";
 import { productPortfolioSchema } from "@/src/schemas/vendor/products.schema";
 import { supportServicesSchema } from "@/src/schemas/vendor/support.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { router, useLocalSearchParams } from "expo-router/build";
+import { FormProvider } from "react-hook-form";
+import FinancialSection from "./sections/FinancialSection";
+import LicenseSection from "./sections/LicenseSection";
+import OperationalSection from "./sections/OperationalSection";
+import ProductSection from "./sections/ProductSection";
+import SupportSection from "./sections/SupportSection";
 
 export default function VendorProfileCompletionScreen() {
   const { section } = useLocalSearchParams();
-  const { vendorId } = useAuth();
+  const { vendorId, setVendorId, vendorProfileId, setVendorProfileId } =
+    useAuth();
 
   const sectionMap = {
     license: 0,
@@ -44,30 +42,21 @@ export default function VendorProfileCompletionScreen() {
     support: 4,
   };
 
-  const initialStep = sectionMap[section as string] ?? 0;
+  const initialStep = sectionMap[section as string] ?? 4;
   const [step, setStep] = useState(initialStep);
-
-  // -------------------------------
-  // 🔍 Queries (FETCH EXISTING DATA)
-  // -------------------------------
   const { data: licenseData } = useVendorLicenseQuery(vendorId);
   const { data: productsData } = useVendorProductsQuery(vendorId);
   const { data: operationsData } = useVendorOperationsQuery(vendorId);
   const { data: financialData } = useVendorFinancialQuery(vendorId);
   const { data: supportData } = useVendorSupportQuery(vendorId);
-
-  // -------------------------------
-  // 💾 Mutations (SAVE)
-  // -------------------------------
+  const { data: profileData, refetch: refetchProfile } =
+    useVendorProfileQuery(vendorId);
   const { mutateAsync: saveLicense } = useVendorLicenseMutation();
   const { mutateAsync: saveProducts } = useVendorProductsMutation();
   const { mutateAsync: saveOperations } = useVendorOperationsMutation();
   const { mutateAsync: saveFinancial } = useVendorFinancialMutation();
   const { mutateAsync: saveSupport } = useVendorSupportMutation();
 
-  // -------------------------------
-  // 📌 Step Schemas
-  // -------------------------------
   const schemas = [
     licensingComplianceSchema,
     productPortfolioSchema,
@@ -75,22 +64,23 @@ export default function VendorProfileCompletionScreen() {
     financialPaymentSchema,
     supportServicesSchema,
   ];
+  useEffect(() => {
+    if (!profileData) return;
+    const run = async () => {
+      await setVendorProfileId(profileData.id);
+      if (step === 0) await refetchProfile();
+    };
+    run();
+  }, [step, vendorId]);
 
-  const methods = useForm({
-    resolver: zodResolver(schemas[step]),
-    mode: "onChange",
-  });
-
+  const methods = useZodForm(schemas[step]);
   const {
-    handleSubmit,
-    trigger,
     control,
+    handleSubmit,
     formState: { errors },
+    setValue,
   } = methods;
 
-  // -------------------------------
-  // 🔄 PRE-FILL ON SCREEN LOAD
-  // -------------------------------
   useEffect(() => {
     const prefillMap = {
       0: licenseData,
@@ -115,39 +105,36 @@ export default function VendorProfileCompletionScreen() {
     supportData,
   ]);
 
-  // -------------------------------
-  // 🧩 Step Submit Handler
-  // -------------------------------
   const handleStepSubmit = async (values: any) => {
-    setStep(step + 1);
-    // try {
-    //   if (step === 0) {
-    //     await saveLicense({ ...values, vendorId });
-    //     return setStep(1);
-    //   }
-    //   if (step === 1) {
-    //     await saveProducts({ ...values, vendorId });
-    //     return setStep(2);
-    //   }
-    //   if (step === 2) {
-    //     await saveOperations({ ...values, vendorId });
-    //     return setStep(3);
-    //   }
-    //   if (step === 3) {
-    //     await saveFinancial({ ...values, vendorId });
-    //     return setStep(4);
-    //   }
-    //   if (step === 4) {
-    //     await saveSupport({ ...values, vendorId });
-    //     Alert.alert("Success", "Vendor profile completed!");
-    //     return router.back();
-    //   }
-    // } catch (err: any) {
-    //   Alert.alert(
-    //     "Error",
-    //     err?.response?.data?.message || "Something went wrong"
-    //   );
-    // }
+    // setStep(step + 1);
+    try {
+      if (step === 0) {
+        await saveLicense({ ...values, vendorId });
+        return setStep(1);
+      }
+      if (step === 1) {
+        await saveProducts({ ...values, vendorId });
+        return setStep(2);
+      }
+      if (step === 2) {
+        await saveOperations({ ...values, vendorId });
+        return setStep(3);
+      }
+      if (step === 3) {
+        await saveFinancial({ ...values, vendorId });
+        return setStep(4);
+      }
+      if (step === 4) {
+        await saveSupport({ ...values, vendorId });
+        Alert.alert("Success", "Vendor profile completed!");
+        return router.back();
+      }
+    } catch (err: any) {
+      Alert.alert(
+        "Error",
+        err?.response?.data?.message || "Something went wrong"
+      );
+    }
   };
 
   return (

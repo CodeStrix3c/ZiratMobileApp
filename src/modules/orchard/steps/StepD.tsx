@@ -1,24 +1,12 @@
-// StepD_CropNutrition.js
-import FormInput from "@/src/components/form/inputs/FormInput";
-import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import React from "react";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { ScrollView, Text, View } from "react-native";
 import { RadioButton } from "react-native-paper";
 
-export default function StepD_CropNutrition() {
-  const methods = useForm({
-    defaultValues: {
-      fertilizerPractice: "",
-      fertigation: "",
-      nutritionPlan: "",
-      mulching: "",
-      lastFertiliserDate: "",
-      applicationMode: "",
-    },
-  });
+import FormInput from "@/src/components/form/inputs/FormInput";
+import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 
-  // Select Options
+export default function StepD_CropNutrition({ control, errors }: any) {
+  
   const fertilizerOptions = [
     { label: "Organic", value: "Organic" },
     { label: "Chemical", value: "Chemical" },
@@ -36,37 +24,33 @@ export default function StepD_CropNutrition() {
   ];
 
   return (
-    <FormProvider {...methods}>
-      <ScrollView className="flex-1 w-full">
+    <ScrollView className="flex-1 w-full">
 
-        {/* Heading */}
-        <Text className="text-2xl font-bold mb-4 text-center text-primary">
-          Crop & Nutrition Management
+      <Text className="text-2xl font-bold mb-4 text-center text-primary">
+        Crop & Nutrition Management
+      </Text>
+
+      <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
+
+        {/* 1️⃣ Fertilizer Practice */}
+        <SingleSelectInput
+          control={control}
+          name="fertilizerPractice"
+          label="Fertilizer Practices"
+          options={fertilizerOptions}
+          error={errors.fertilizerPractice}
+        />
+
+        {/* 2️⃣ Fertigation (YES/NO) */}
+        <Text className="text-base font-semibold mt-4 mb-2 text-dark">
+          Fertigation Facilities
         </Text>
 
-        <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
-
-          <Text className="text-lg font-semibold mb-3 text-primary">
-            Crop & Nutrition Management
-          </Text>
-
-          {/* 1. Fertilizer Practices */}
-          <SingleSelectInput
-            control={methods.control}
-            name="fertilizerPractice"
-            label="Fertilizer Practices"
-            options={fertilizerOptions}
-          />
-
-          {/* 2. Fertigation Facilities (YES/NO) */}
-          <Text className="text-base font-semibold mt-4 mb-2 text-dark">
-            Fertigation Facilities
-          </Text>
-
-          <Controller
-            control={methods.control}
-            name="fertigation"
-            render={({ field: { value, onChange } }) => (
+        <Controller
+          control={control}
+          name="fertigation"
+          render={({ field: { value, onChange } }) => (
+            <>
               <RadioButton.Group onValueChange={onChange} value={value}>
                 {yesNoOptions.map((opt) => (
                   <View key={opt.value} className="flex-row items-center mb-1">
@@ -75,27 +59,35 @@ export default function StepD_CropNutrition() {
                   </View>
                 ))}
               </RadioButton.Group>
-            )}
-          />
 
-          {/* 3. Nutrition Plan */}
-          <FormInput
-            control={methods.control}
-            name="nutritionPlan"
-            label="Nutrition Plan (if already following)"
-            icon="book-open-page-variant"
-            iconColor="secondary"
-          />
+              {errors.fertigation && (
+                <Text className="text-error text-sm">
+                  {errors.fertigation.message}
+                </Text>
+              )}
+            </>
+          )}
+        />
 
-          {/* 4. Mulching (YES/NO) */}
-          <Text className="text-base font-semibold mt-4 mb-2 text-dark">
-            Mulching
-          </Text>
+        {/* 3️⃣ Nutrition Plan (optional) */}
+        <FormInput
+          control={control}
+          name="nutritionPlan"
+          label="Nutrition Plan (optional)"
+          icon="book-open-page-variant"
+          error={errors.nutritionPlan?.message}
+        />
 
-          <Controller
-            control={methods.control}
-            name="mulching"
-            render={({ field: { value, onChange } }) => (
+        {/* 4️⃣ Mulching (YES/NO) */}
+        <Text className="text-base font-semibold mt-4 mb-2 text-dark">
+          Mulching
+        </Text>
+
+        <Controller
+          control={control}
+          name="mulching"
+          render={({ field: { value, onChange } }) => (
+            <>
               <RadioButton.Group onValueChange={onChange} value={value}>
                 {yesNoOptions.map((opt) => (
                   <View key={opt.value} className="flex-row items-center mb-1">
@@ -104,28 +96,35 @@ export default function StepD_CropNutrition() {
                   </View>
                 ))}
               </RadioButton.Group>
-            )}
-          />
 
-          {/* 5. Last Fertilizer Application Date */}
-          <FormInput
-            control={methods.control}
-            name="lastFertiliserDate"
-            label="Last Fertiliser Application Date"
-            icon="calendar"
-            iconColor="secondary"
-          />
+              {errors.mulching && (
+                <Text className="text-error text-sm">
+                  {errors.mulching.message}
+                </Text>
+              )}
+            </>
+          )}
+        />
 
-          {/* 6. Mode of Fertiliser Application */}
-          <SingleSelectInput
-            control={methods.control}
-            name="applicationMode"
-            label="Mode of Fertiliser Application"
-            options={applicationModeOptions}
-          />
+        {/* 5️⃣ Last Fertilizer Application Date */}
+        <FormInput
+          control={control}
+          name="lastFertiliserDate"
+          label="Last Fertiliser Application Date"
+          icon="calendar"
+          error={errors.lastFertiliserDate?.message}
+        />
 
-        </View>
-      </ScrollView>
-    </FormProvider>
+        {/* 6️⃣ Mode of Application */}
+        <SingleSelectInput
+          control={control}
+          name="applicationMode"
+          label="Mode of Fertiliser Application"
+          options={applicationModeOptions}
+          error={errors.applicationMode}
+        />
+
+      </View>
+    </ScrollView>
   );
 }

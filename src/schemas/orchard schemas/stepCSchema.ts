@@ -42,14 +42,8 @@ export const waterAvailabilityOptions = [
 
 export const soilHealthOptions = ["Acidic", "Alkaline", "Not Known"] as const;
 
-/**
- * FIXED + CLEAN SCHEMA
- */
 export const stepCSoilWaterSchema = z.object({
 
-  /** ------------------------
-   *   REQUIRED ENUM FIELDS
-   * -------------------------*/
   soilType: z.enum(soilTypeOptions, {
     invalid_type_error: "Please choose a valid soil type.",
     required_error: "Soil type is required.",
@@ -76,9 +70,7 @@ export const stepCSoilWaterSchema = z.object({
   }),
 
 
-  /** ------------------------
-   *   OPTIONAL NUMERIC FIELDS
-   * -------------------------*/
+  
   soilPH: z.coerce
     .number({ invalid_type_error: "Enter valid pH (0–14)." })
     .min(0, "pH must be >= 0")

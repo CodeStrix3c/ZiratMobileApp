@@ -1,30 +1,8 @@
-import React, { useState } from "react";
-import { Control, Controller, FieldError } from "react-hook-form";
+import { FormSectionProps } from "@/src/types/formSectionProps";
+import { useState } from "react";
+import { Controller } from "react-hook-form";
 import { View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";
-
-const colorMap: any = {
-  primary: "#2d6b06",
-  secondary: "#c7611f",
-  dark: "#222222",
-  light: "#ffffff",
-  error: "#f44336",
-};
-
-interface FormInputProps {
-  control: Control<any>;
-  name: string;
-  label: string;
-  type?: "text" | "number" | "email" | "phone" | "password";
-  optional?: boolean;
-  icon?: string | null;
-  iconColor?: "primary" | "secondary" | "dark" | "light" | "error";
-  iconSize?: number;
-  onPressIcon?: () => void;
-  defaultValue?: string;
-  error?: FieldError;
-  [key: string]: any; // For other TextInput props
-}
 
 export default function FormInput({
   control,
@@ -32,25 +10,12 @@ export default function FormInput({
   label,
   type = "text",
   optional = false,
-  icon = null,
-  iconColor = "secondary",
-  iconSize = 22,
-  onPressIcon,
   defaultValue = "",
   error,
+  keyboardType,
   ...props
-}: FormInputProps) {
-  console.log(error, "error");
-
+}: FormSectionProps) {
   const [showPassword, setShowPassword] = useState(false);
-
-  const keyboardTypeMap = {
-    text: "default",
-    number: "numeric",
-    email: "email-address",
-    phone: "phone-pad",
-    password: "default",
-  } as const;
 
   const isSecure = type === "password";
 
@@ -59,62 +24,57 @@ export default function FormInput({
       control={control}
       name={name}
       defaultValue={defaultValue}
-      render={({ field: { onChange, value, onBlur }, fieldState: { error: fieldError } }) => {
-        const showError = !optional && !!fieldError;
+      render={({
+        field: { onChange, value, onBlur },
+        fieldState: { error: fieldError },
+      }) => {
+        const showError = Boolean(fieldError?.message || error?.message);
+
+        const resolvedKeyboard = keyboardType
+          ? keyboardType
+          : type === "email"
+            ? "email-address"
+            : type === "phone"
+              ? "phone-pad"
+              : "default";
 
         return (
-          <View className="mb-5 w-full">
+          <View style={{ marginBottom: 20 }}>
             <TextInput
               label={optional ? `${label} (Optional)` : label}
               mode="outlined"
               value={value}
               onChangeText={(text) => {
-                if (type === "number") {
-                  const numericValue = text.replace(/[^0-9]/g, "");
-                  onChange(numericValue);
+                const isNumericOnly =
+                  resolvedKeyboard === "phone-pad" ||
+                  resolvedKeyboard === "numeric";
+
+                if (isNumericOnly) {
+                  const digits = text.replace(/\D/g, "");
+                  onChange(digits);
                 } else {
                   onChange(text);
                 }
               }}
               onBlur={onBlur}
               secureTextEntry={isSecure && !showPassword}
-              keyboardType={keyboardTypeMap[type]}
+              keyboardType={resolvedKeyboard}
               error={showError}
-              contentStyle={{}}
-
-              /* LEFT ICON */
-              left={
-                icon ? (
-                  <TextInput.Icon
-                    icon={icon}
-                    color={colorMap[iconColor] || colorMap.secondary}
-                    size={iconSize}
-                    onPress={onPressIcon}
-                  />
-                ) : undefined
-              }
-
-              /* RIGHT ICON (for password) */
               right={
-                isSecure ? (
+                isSecure && (
                   <TextInput.Icon
                     icon={showPassword ? "eye-off" : "eye"}
-                    color={colorMap.primary}
-                    size={iconSize}
                     onPress={() => setShowPassword((p) => !p)}
                   />
-                ) : (
-                  props.right
                 )
               }
-
-              className="bg-light"
+              style={{ backgroundColor: "white" }}
               {...props}
             />
 
             {showError && (
               <HelperText type="error" visible>
-                {fieldError?.message}
+                {(fieldError || error)?.message}
               </HelperText>
             )}
           </View>

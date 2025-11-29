@@ -1,19 +1,22 @@
 import { router } from "expo-router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 import { FormProvider } from "react-hook-form";
-import { z } from "zod";
 
-// STEP A, B, C Schemas
 import { orchardSchema } from "@/src/schemas/orchard schemas/stepASchemas";
 import { stepBBasicInfoSchema, } from "@/src/schemas/orchard schemas/stepBSchema";
 
-// Default Values
 
 // Step Screens
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { stepCSoilWaterSchema } from "@/src/schemas/orchard schemas/stepCSchema";
+import { stepDCropNutritionSchema } from "@/src/schemas/orchard schemas/stepDSchema";
+import { stepEPlantProtectionSchema } from "@/src/schemas/orchard schemas/stepESchema";
+import { stepFFarmInfrastructureSchema } from "@/src/schemas/orchard schemas/stepFSchema";
+import { stepGProductionMarketingSchema } from "@/src/schemas/orchard schemas/stepGSchema";
+import { stepHInputCostDetailsSchema } from "@/src/schemas/orchard schemas/stepHScema";
+import { stepIOptionalFutureFieldsSchema } from "@/src/schemas/orchard schemas/stepISchema";
 import StepA from "./steps/StepA";
 import StepB from "./steps/StepB";
 import StepC from "./steps/StepC";
@@ -31,21 +34,23 @@ export default function OrchardRegistration() {
  const schemas = [
   orchardSchema,           // Step A
   stepBBasicInfoSchema,    // Step B
-  stepCSoilWaterSchema,    // Step C
+  stepCSoilWaterSchema, 
+  stepDCropNutritionSchema,
+  stepEPlantProtectionSchema,
+  stepFFarmInfrastructureSchema,
+  stepGProductionMarketingSchema,
+  stepHInputCostDetailsSchema,
+  stepIOptionalFutureFieldsSchema
 ];
 
-  const currentSchema = schemas[step - 1] ?? z.object({});
 
-  const methods = useZodForm(schemas[step - 1])
+  const methods = useZodForm(schemas [step-1])
 
-  // const methods = useForm({
-  //   resolver: zodResolver(currentSchema),
-  //   defaultValues: orchardDefaults,
-  //   mode: "onTouched",
-  //   key: currentSchema
-  // });
-
-  // const { handleSubmit } = methods;
+    const {
+      control,
+      handleSubmit,
+      formState: { errors },
+    } = methods;
 
   const steps = [
     "Basic Info",
@@ -110,15 +115,15 @@ export default function OrchardRegistration() {
 
         {/* STEP CONTENT */}
         <View>
-          {step === 1 && <StepA />}
-          {step === 2 && <StepB />}
-          {step === 3 && <StepC />}
-          {step === 4 && <StepD />}
-          {step === 5 && <StepE />}
-          {step === 6 && <StepF />}
-          {step === 7 && <StepG />}
-          {step === 8 && <StepH />}
-          {step === 9 && <StepI />}
+          {step === 1 && <StepA control= {control} errors={errors}/>}
+          {step === 2 && <StepB control= {control} errors={errors} />}
+          {step === 3 && <StepC control= {control} errors={errors}/>}
+          {step === 4 && <StepD control= {control} errors={errors}/>}
+          {step === 5 && <StepE control= {control} errors={errors} />}
+          {step === 6 && <StepF control= {control} errors={errors}/>}
+          {step === 7 && <StepG control= {control} errors={errors}/>}
+          {step === 8 && <StepH control= {control} errors={errors} />}
+          {step === 9 && <StepI control= {control} errors={errors}/>}
         </View>
 
         {/* NAVIGATION BUTTONS */}
