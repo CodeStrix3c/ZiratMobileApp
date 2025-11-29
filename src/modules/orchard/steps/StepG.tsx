@@ -1,30 +1,20 @@
 // StepG_ProductionMarketing.js
+
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
 import { ScrollView, Text, View } from "react-native";
 
-export default function StepG_ProductionMarketing() {
-  const methods = useForm({
-    defaultValues: {
-      annualYield: "",
-      peakHarvestSeason: "",
-      sellingPreference: "",
-      buyerDetails: "",
-    },
-  });
+import { sellingPreferenceOptions } from "@/src/schemas/orchard schemas/stepGSchema";
 
-  // SELLING PREFERENCE OPTIONS (map-ready)
-  const sellingPreferenceOptions = [
-    "Local Mandi",
-    "Commission Agent",
-    "FPO",
-    "Direct Buyer",
-    "Online Platform",
-  ].map((x) => ({ label: x, value: x }));
+export default function StepG_ProductionMarketing({ control, errors }:any) {
 
-  // FORM INPUT LIST TO AVOID REPETITION
+  // Map-ready dropdown format
+  const sellingOptions = sellingPreferenceOptions.map((x) => ({
+    label: x,
+    value: x,
+  }));
+
+  // Dynamic form field list
   const productionFields = [
     {
       name: "annualYield",
@@ -39,52 +29,51 @@ export default function StepG_ProductionMarketing() {
   ];
 
   return (
-    <FormProvider {...methods}>
-      <ScrollView className="flex-1 w-full">
+    <ScrollView className="flex-1 w-full">
+      {/* Page Heading */}
+      <Text className="text-2xl font-bold mb-4 text-center text-primary">
+        Production & Marketing
+      </Text>
 
-        {/* HEADING */}
-        <Text className="text-2xl font-bold mb-4 text-center text-primary">
-          Production & Marketing
+      <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
+
+        <Text className="text-lg font-semibold mb-3 text-primary">
+          Production & Marketing Information
         </Text>
 
-        <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
-
-          <Text className="text-lg font-semibold mb-3 text-primary">
-            Production & Marketing Information
-          </Text>
-
-          {/* 🔥 REPEATED FIELDS USING MAP */}
-          {productionFields.map((item) => (
-            <FormInput
-              key={item.name}
-              control={methods.control}
-              name={item.name}
-              label={item.label}
-              icon={item.icon}
-              iconColor="secondary"
-            />
-          ))}
-
-          {/* 3 — Selling Preference (Dropdown) */}
-          <SingleSelectInput
-            control={methods.control}
-            name="sellingPreference"
-            label="Selling Preference"
-            options={sellingPreferenceOptions}
-          />
-
-          {/* 4 — Buyer Details (Optional) */}
+        {/* Repeated text inputs (Yield + Harvest Season) */}
+        {productionFields.map((item) => (
           <FormInput
-            control={methods.control}
-            name="buyerDetails"
-            label="Buyer Details (Optional)"
-            optional={true}
-            icon="account-box"
+            key={item.name}
+            control={control}
+            name={item.name}
+            label={item.label}
+            icon={item.icon}
             iconColor="secondary"
+            error={errors[item.name]}
           />
+        ))}
 
-        </View>
-      </ScrollView>
-    </FormProvider>
+        {/* Selling Preference */}
+        <SingleSelectInput
+          control={control}
+          name="sellingPreference"
+          label="Selling Preference"
+          options={sellingOptions}
+          error={errors.sellingPreference}
+        />
+
+        {/* Buyer Details (OPTIONAL) */}
+        <FormInput
+          control={control}
+          name="buyerDetails"
+          label="Buyer Details (Optional)"
+          optional={true}
+          icon="account-box"
+          iconColor="secondary"
+          error={errors.buyerDetails}
+        />
+      </View>
+    </ScrollView>
   );
 }

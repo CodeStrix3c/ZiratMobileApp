@@ -1,31 +1,15 @@
-// StepB_BasicInfo.js
+import CheckboxGroup from "@/src/components/form/inputs/Checkbox";
 import FormInput from "@/src/components/form/inputs/FormInput";
-import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import React from "react";
-import { Controller, FormProvider, useForm } from "react-hook-form";
-import { ScrollView, Text, View } from "react-native";
-import { Checkbox, RadioButton } from "react-native-paper";
+import RadioGroup from "@/src/components/form/inputs/RadioButton";
 
-export default function StepB_BasicInfo() {
-  const methods = useForm({
-    defaultValues: {
-      varieties: [],
-      totalTrees: "",
-      treesPerVariety: "",
-      rootstock: "",
-      plantDensity: "",
-      treeAge: "",
-    },
-  });
+import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
+import { ScrollView, View } from "react-native";
+
+export default function StepB_BasicInfo({ control, errors }) {
 
   const varietiesList = [
-    "Red Delicious",
-    "Golden Delicious",
-    "Gala",
-    "Fuji",
-    "Honeycrisp",
-    "Ambri",
-    "Other",
+    "Red Delicious", "Golden Delicious", "Gala", "Fuji",
+    "Honeycrisp", "Ambri", "Other",
   ];
 
   const rootstockOptions = [
@@ -42,116 +26,62 @@ export default function StepB_BasicInfo() {
   ];
 
   const treeAgeOptions = [
-    "Less than 5 years",
-    "5–10 years",
-    "10+ years",
+    "Less than 5 years", "5–10 years", "10+ years"
   ];
 
   return (
-    <FormProvider {...methods}>
-      <ScrollView className="flex-1 w-full">
+    <ScrollView>
+      <View style={{ padding: 20 }}>
 
-        {/* Heading */}
-        <Text className="text-2xl font-bold mb-4 text-center text-primary">
-          Orchard Registration
-        </Text>
+        <CheckboxGroup
+          control={control}
+          name="varieties"
+          label="Varieties Planted"
+          options={varietiesList}
+          error={errors.varieties}
+        />
 
-        {/* Card */}
-        <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
+        <FormInput
+          control={control}
+          name="totalTrees"
+          label="Total Number of Trees"
+          type="number"
+          error={errors.totalTrees}
+        />
 
-          <Text className="text-lg font-semibold mb-3 text-primary">
-            Variety & Planting Details
-          </Text>
+        <FormInput
+          control={control}
+          name="treesPerVariety"
+          label="Trees Per Variety"
+          type="number"
+          error={errors.treesPerVariety}
+        />
 
-          {/* 1. Multi-select (Varieties) */}
-          <Text className="text-base font-semibold mb-2 text-dark">
-            Varieties Planted
-          </Text>
+        <SingleSelectInput
+          control={control}
+          name="rootstock"
+          label="Rootstock Used"
+          options={rootstockOptions}
+          error={errors.rootstock}
+        />
 
-          <Controller
-            control={methods.control}
-            name="varieties"
-            render={({ field: { value, onChange } }) => (
-              <View className="flex-row flex-wrap">
-                {varietiesList.map((v) => (
-                  <View key={v} className="flex-row items-center w-1/2 mb-2">
-                    <Checkbox
-                      status={value.includes(v) ? "checked" : "unchecked"}
-                      onPress={() => {
-                        if (value.includes(v)) {
-                          onChange(value.filter((item) => item !== v));
-                        } else {
-                          onChange([...value, v]);
-                        }
-                      }}
-                      color="#c7611f"
-                    />
-                    <Text className="text-dark text-sm">{v}</Text>
-                  </View>
-                ))}
-              </View>
-            )}
-          />
+        <SingleSelectInput
+          control={control}
+          name="plantDensity"
+          label="Plant Density"
+          options={densityOptions}
+          error={errors.plantDensity}
+        />
 
-          {/* 2. Number of Trees */}
-          <FormInput
-            control={methods.control}
-            name="totalTrees"
-            label="Total Number of Trees"
-            icon="counter"
-            iconColor="secondary"
-          />
+        <RadioGroup
+          control={control}
+          name="treeAge"
+          label="Tree Age Distribution"
+          options={treeAgeOptions}
+          error={errors.treeAge}
+        />
 
-          <FormInput
-            control={methods.control}
-            name="treesPerVariety"
-            label="Trees Per Variety"
-            icon="format-list-numbered"
-            iconColor="secondary"
-          />
-
-          {/* 3. Rootstock Used (Dropdown) */}
-          <SingleSelectInput
-            control={methods.control}
-            name="rootstock"
-            label="Rootstock Used"
-            options={rootstockOptions}
-            // mainColor="secondary"
-            // textColor="dark"
-          />
-
-          {/* 4. Plant Density (Dropdown) */}
-          <SingleSelectInput
-            control={methods.control}
-            name="plantDensity"
-            label="Plant Density"
-            options={densityOptions}
-            // mainColor="secondary"
-            // textColor="dark"
-          />
-
-          {/* 5. Tree Age Distribution (Radio Group) */}
-          <Text className="text-base font-semibold mt-4 mb-2 text-dark">
-            Tree Age Distribution
-          </Text>
-
-          <Controller
-            control={methods.control}
-            name="treeAge"
-            render={({ field: { value, onChange } }) => (
-              <RadioButton.Group onValueChange={onChange} value={value}>
-                {treeAgeOptions.map((opt) => (
-                  <View key={opt} className="flex-row items-center mb-1">
-                    <RadioButton value={opt} color="#c7611f" />
-                    <Text className="text-dark">{opt}</Text>
-                  </View>
-                ))}
-              </RadioButton.Group>
-            )}
-          />
-
-        </View>
-      </ScrollView>
-    </FormProvider>
+      </View>
+    </ScrollView>
   );
 }

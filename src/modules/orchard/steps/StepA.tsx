@@ -1,24 +1,8 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
-import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
 import { ScrollView, Text, View } from "react-native";
 
-export default function StepA_BasicInfo() {
-  const methods = useForm({
-    defaultValues: {
-      orchardName: "",
-      orchardSize: "",
-      establishmentYear: "",
-      plantationPattern: "",
-      ownershipType: "",
-      district: "",
-      tehsil: "",
-      zone: "",
-      pincode: "",
-      latitude: "",
-      longitude: "",
-    },
-  });
+export default function StepA_BasicInfo({control, errors}) {
+  
 
   const fields = [
     { name: "orchardName", label: "Orchard Name", icon: "account" },
@@ -35,37 +19,31 @@ export default function StepA_BasicInfo() {
   ];
 
   return (
-    <FormProvider {...methods}>
-      <ScrollView className="flex-1 w-full">
+    <ScrollView className="flex-1 w-full">
 
-        {/* Heading */}
-        <Text className="text-2xl font-bold mb-4 text-center text-primary">
-          Orchard Registration
+      <Text className="text-2xl font-bold mb-4 text-center text-primary">
+        Orchard Registration
+      </Text>
+
+      <View className="bg-light rounded-2xl px-4 shadow-md shadow-neutral w-full">
+        <Text className="text-lg font-semibold mb-3 text-primary">
+          Basic / Mandatory Information
         </Text>
 
-        {/* Form Card */}
-        <View className="bg-light rounded-2xl px-4 shadow-md shadow-neutral w-full ">
-
-          <Text className="text-lg font-semibold mb-3 text-primary">
-            Basic / Mandatory Information
-          </Text>
-
-          {fields.map((field) => (
-            <FormInput
+        {fields.map((field) => (
+          <FormInput
+            key={field.name}
+            control={control}
+            name={field.name}
+            label={field.label}
+            icon={field.icon}
+            iconColor="secondary"
             iconSize={20}
-              key={field.name}
-              control={methods.control}
-              name={field.name}
-              label={field.label}
-              icon={field.icon}
-              iconColor="secondary"
-              className="w-full"
-              
-            />
-          ))}
+            errors={errors}
+          />
+        ))}
 
-        </View>
-      </ScrollView>
-    </FormProvider>
+      </View>
+    </ScrollView>
   );
 }
